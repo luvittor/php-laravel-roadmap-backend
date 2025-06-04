@@ -1,0 +1,135 @@
+name: Deploy Roadmap to Dreamhost
+
+on:
+#   push:
+#     branches:
+#       - main
+  workflow_dispatch:
+
+jobs:
+  roadmap-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Setup PHP environment
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, exif, pcntl, bcmath, gd
+          coverage: none
+
+      # 3. Install dependencies
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-dev --optimize-autoloader
+
+      # 4. Generate Laravel caches (optional, but recommended)
+      - name: Generate Laravel caches
+        run: |
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+
+      # 5. Create a temporary directory on the server for uploading files
+      - name: Create temp directory on server
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          port: 22
+          script: |
+            # Remover pasta temporária antiga e recriar
+            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp
+            mkdir /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp
+
+      # 6. Upload all files (including vendor/) to the temporary directory
+      - name: Deploy Laravel via SFTP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          port: 22
+          # Uploading the entire repository, including vendor/ and cache files
+          source: "./"
+          target: "/home/dh_jirb5e/vittoretti.com_roadmap_api_tmp"
+
+      # 7.1. Clean up unnecessary files and directories from the temporary directory
+      - name: Cleanup unnecessary files
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          port: 22
+          script: |
+            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/.github
+            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/.git
+            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/*.md
+            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/.env.example
+            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/storage/logs/*.log
+            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/tests
+            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/docs
+
+      # 7.2. Remove old directory (if it exists)
+      - name: Remove old directory
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          port: 22
+          script: |
+            rm -rf /home/dh_jirb5e/vittoretti.com/roadmap/api
+
+      # 7.3. Move the temporary directory to the final directory
+      - name: Move temp to final directory
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          port: 22
+          script: |
+            mv /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp /home/dh_jirb5e/vittoretti.com/roadmap/api
+
+      # 7.4. Copy .env file to the production directory
+      - name: Copy .env to production
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          port: 22
+          script: |
+            cp /home/dh_jirb5e/vittoretti.com_roadmap_api/.env /home/dh_jirb5e/vittoretti.com/roadmap/api/.env
+
+      # 7.5. Set file permissions (maybe necessary depending on your server setup)
+    #   - name: Set file permissions
+    #     uses: appleboy/ssh-action@v0.1.7
+    #     with:
+    #       host: ${{ secrets.SFTP_HOST }}
+    #       username: ${{ secrets.SFTP_USERNAME }}
+    #       password: ${{ secrets.SFTP_PASSWORD }}
+    #       port: 22
+    #       script: |
+    #         chown -R dh_jirb5e:dh_jirb5e /home/dh_jirb5e/vittoretti.com/roadmap/api
+    #         find /home/dh_jirb5e/vittoretti.com/roadmap/api -type f -exec chmod 644 {} \;
+    #         find /home/dh_jirb5e/vittoretti.com/roadmap/api -type d -exec chmod 755 {} \;
+
+      # 7.6. Rodar migrações
+      - name: Run migrations
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          port: 22
+          script: |
+            cd /home/dh_jirb5e/vittoretti.com/roadmap/api
+            php artisan migrate --force
