@@ -1,4 +1,4 @@
-name: Deploy Roadmap to Dreamhost
+name: Deploy Roadmap Backend to Dreamhost
 
 on:
 #   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  roadmap-deploy:
+  roadmap-backend-deploy:
     runs-on: ubuntu-latest
 
     steps:
