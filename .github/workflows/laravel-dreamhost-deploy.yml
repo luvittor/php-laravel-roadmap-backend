@@ -63,6 +63,16 @@ jobs:
             rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/tests
             rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/docs
 
+      - name: Copy .env file to the temp directory
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          port: 22
+          script: |
+            cp /home/dh_jirb5e/vittoretti.com_envs/roadmap_api.env /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/.env
+
       - name: Rename current dir to old
         uses: appleboy/ssh-action@v0.1.7
         with:
@@ -73,16 +83,6 @@ jobs:
           script: |
             # Rename current api directory to api_old, if it exists
             mv /home/dh_jirb5e/vittoretti.com/roadmap/api /home/dh_jirb5e/vittoretti.com/roadmap/api_old 2>/dev/null || true
-
-      - name: Copy .env file to the temp directory
-        uses: appleboy/ssh-action@v0.1.7
-        with:
-          host: ${{ secrets.SFTP_HOST }}
-          username: ${{ secrets.SFTP_USERNAME }}
-          password: ${{ secrets.SFTP_PASSWORD }}
-          port: 22
-          script: |
-            cp /home/dh_jirb5e/vittoretti.com_envs/roadmap_api.env /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/.env
 
       - name: Move temp to final directory
         uses: appleboy/ssh-action@v0.1.7
