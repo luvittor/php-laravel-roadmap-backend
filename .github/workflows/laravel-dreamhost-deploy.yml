@@ -67,6 +67,9 @@ jobs:
             # Copy .env file to the temp directory
             cp /home/dh_jirb5e/vittoretti.com_envs/roadmap_api.env /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/.env
 
+            # Create the target directory if it doesn't exist
+            mkdir -p /home/dh_jirb5e/vittoretti.com/roadmap
+
             # Rename current api directory to api_old, if it exists
             mv /home/dh_jirb5e/vittoretti.com/roadmap/api /home/dh_jirb5e/vittoretti.com/roadmap/api_old 2>/dev/null || true
 
