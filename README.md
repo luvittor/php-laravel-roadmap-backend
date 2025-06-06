@@ -1,5 +1,18 @@
 # Roadmap Backend
 
+## Defining .env
+
+### CORS_ALLOWED_ORIGINS
+
+Set CORS_ALLOWED_ORIGINS with your frontend URLs separated by commas, e.g. `https://www.example.com,https://example.com` or * to allow all origins (recommended only for development).
+
+When change CORS_ALLOWED_ORIGINS run:
+
+```bash
+php artisan config:clear
+php artisan cache:clear
+```
+
 ## Development Environment
 
 By default, we provide a Docker‐based setup (Nginx + PHP-FPM) to mirror production as closely as possible. However, on Windows/WSL this configuration can be noticeably slower due to file-system performance. You have two ways to run the app locally:
