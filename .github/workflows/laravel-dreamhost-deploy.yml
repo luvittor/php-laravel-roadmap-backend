@@ -59,11 +59,15 @@ jobs:
             rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/.github
             rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/.git
             rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/.gitignore
+            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/README*  
+            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/LICENSE*  
             rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/*.md
             rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/.env*
             rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/storage/logs/*.log
             rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/tests
             rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/docs
+            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/Dockerfile*
+            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/docker-compose.yml
             
             # Copy .env file to the temp directory
             cp /home/dh_jirb5e/vittoretti.com_envs/roadmap_api.env /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/.env
