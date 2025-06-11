@@ -12,8 +12,10 @@ class ExampleTest extends TestCase
      */
     public function test_the_application_returns_a_successful_response(): void
     {
-        $response = $this->get('/');
+        $response = $this->get('/ping');
 
         $response->assertStatus(200);
+        $response->assertSeeText('pong');
+        $response->assertHeader('Content-Type', 'text/plain; charset=UTF-8');
     }
 }
