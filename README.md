@@ -6,7 +6,7 @@
 
 Set CORS_ALLOWED_ORIGINS with your frontend URLs separated by commas, e.g. `https://www.example.com,https://example.com` or * to allow all origins (recommended only for development).
 
-When change CORS_ALLOWED_ORIGINS run:
+When changing CORS_ALLOWED_ORIGINS, run:
 
 ```bash
 php artisan config:clear
