@@ -45,4 +45,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get the columns for the user.
+     */
+    public function columns()
+    {
+        return $this->hasMany(Column::class);
+    }
 }
