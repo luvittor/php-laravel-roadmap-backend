@@ -13,7 +13,6 @@ class CardFactory extends Factory
     public function definition(): array
     {
         return [
-            'column_id' => Column::factory(),
             'title' => fake()->sentence(3),
             'status' => fake()->randomElement(['not_started', 'in_progress', 'completed']),
         ];

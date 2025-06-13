@@ -13,9 +13,8 @@ class ColumnFactory extends Factory
     public function definition(): array
     {
         return [
-            'year' => fake()->year(),
+            'year' => fake()->numberBetween(now()->year - 1, now()->year + 1),
             'month' => fake()->numberBetween(1, 12),
-            'user_id' => User::factory(),
         ];
     }
 }
