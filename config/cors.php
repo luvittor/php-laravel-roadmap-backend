@@ -74,6 +74,6 @@ return [
     | Whether the browser should send credentials (cookies).
     |--------------------------------------------------------------------------
     */
-    'supports_credentials' => false,
+    'supports_credentials' => true,
 
 ];
