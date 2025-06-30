@@ -80,4 +80,21 @@ class AuthApiTest extends TestCase
 
         $this->assertDatabaseCount('personal_access_tokens', 0);
     }
+
+    public function test_routes_return_unauthorized_for_invalid_token(): void
+    {
+        $headers = ['Authorization' => 'Bearer invalid'];
+
+        $this->getJson('/api/user', $headers)
+            ->assertUnauthorized()
+            ->assertExactJson(['message' => 'Unauthenticated.']);
+
+        $this->postJson('/api/logout', [], $headers)
+            ->assertUnauthorized()
+            ->assertExactJson(['message' => 'Unauthenticated.']);
+
+        $this->getJson('/api/ping-auth', $headers)
+            ->assertUnauthorized()
+            ->assertExactJson(['message' => 'Unauthenticated.']);
+    }
 }
