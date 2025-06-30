@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('cards', function (Blueprint $table) {
             $table->unsignedInteger('order')->after('column_id')->default(0)->comment('Order of the card within the column');
+            $table->index(['order']);
         });
     }
 
