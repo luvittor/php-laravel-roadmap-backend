@@ -13,7 +13,7 @@ class AuthApiTest extends TestCase
 
     public function test_register_returns_token_and_creates_user(): void
     {
-        $response = $this->postJson('/api/register', [
+        $response = $this->postJson('/api/v1/register',[
             'name' => 'John Doe',
             'email' => 'john@example.com',
             'password' => 'secret123',
@@ -28,7 +28,7 @@ class AuthApiTest extends TestCase
     {
         $user = User::factory()->create(['password' => Hash::make('secret123')]);
 
-        $response = $this->postJson('/api/login', [
+        $response = $this->postJson('/api/v1/login', [
             'email' => $user->email,
             'password' => 'secret123',
         ]);
@@ -39,7 +39,7 @@ class AuthApiTest extends TestCase
 
     public function test_register_validation_errors_are_returned_for_invalid_data(): void
     {
-        $response = $this->postJson('/api/register', []);
+        $response = $this->postJson('/api/v1/register', []);
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors(['name', 'email', 'password']);
@@ -47,7 +47,7 @@ class AuthApiTest extends TestCase
 
     public function test_login_validation_errors_are_returned_for_invalid_data(): void
     {
-        $response = $this->postJson('/api/login', []);
+        $response = $this->postJson('/api/v1/login', []);
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors(['email', 'password']);
@@ -55,9 +55,9 @@ class AuthApiTest extends TestCase
 
     public function test_user_and_logout_endpoints_require_authentication(): void
     {
-        $this->getJson('/api/user')->assertUnauthorized();
-        $this->postJson('/api/logout')->assertUnauthorized();
-        $this->getJson('/api/ping-auth')->assertUnauthorized();
+        $this->getJson('/api/v1/user')->assertUnauthorized();
+        $this->postJson('/api/v1/logout')->assertUnauthorized();
+        $this->getJson('/api/v1/ping-auth')->assertUnauthorized();
     }
 
     public function test_authenticated_routes_return_expected_responses(): void
@@ -67,15 +67,15 @@ class AuthApiTest extends TestCase
 
         $headers = ['Authorization' => 'Bearer '.$token];
 
-        $this->getJson('/api/user', $headers)
+        $this->getJson('/api/v1/user', $headers)
             ->assertOk()
             ->assertJsonPath('id', $user->id);
 
-        $this->getJson('/api/ping-auth', $headers)
+        $this->getJson('/api/v1/ping-auth', $headers)
             ->assertOk()
             ->assertJson(['message' => 'authenticated pong']);
 
-        $this->postJson('/api/logout', [], $headers)
+        $this->postJson('/api/v1/logout', [], $headers)
             ->assertOk();
 
         $this->assertDatabaseCount('personal_access_tokens', 0);
@@ -85,15 +85,15 @@ class AuthApiTest extends TestCase
     {
         $headers = ['Authorization' => 'Bearer invalid'];
 
-        $this->getJson('/api/user', $headers)
+        $this->getJson('/api/v1/user', $headers)
             ->assertUnauthorized()
             ->assertExactJson(['message' => 'Unauthenticated.']);
 
-        $this->postJson('/api/logout', [], $headers)
+        $this->postJson('/api/v1/logout', [], $headers)
             ->assertUnauthorized()
             ->assertExactJson(['message' => 'Unauthenticated.']);
 
-        $this->getJson('/api/ping-auth', $headers)
+        $this->getJson('/api/v1/ping-auth', $headers)
             ->assertUnauthorized()
             ->assertExactJson(['message' => 'Unauthenticated.']);
     }
