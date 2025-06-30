@@ -55,12 +55,13 @@
 					]
 				},
 				"url": {
-					"raw": "{{base_url}}/api/register",
+					"raw": "{{base_url}}/api/v1/register",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"api",
+						"v1",
 						"register"
 					]
 				}
@@ -94,12 +95,13 @@
 					]
 				},
 				"url": {
-					"raw": "{{base_url}}/api/login",
+					"raw": "{{base_url}}/api/v1/login",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"api",
+						"v1",
 						"login"
 					]
 				}
@@ -130,12 +132,13 @@
 					"formdata": []
 				},
 				"url": {
-					"raw": "{{base_url}}/api/user",
+					"raw": "{{base_url}}/api/v1/user",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"api",
+						"v1",
 						"user"
 					]
 				}
@@ -159,12 +162,13 @@
 					}
 				],
 				"url": {
-					"raw": "{{base_url}}/api/ping-auth",
+					"raw": "{{base_url}}/api/v1/ping-auth",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"api",
+						"v1",
 						"ping-auth"
 					]
 				}
@@ -192,12 +196,13 @@
 					"formdata": []
 				},
 				"url": {
-					"raw": "{{base_url}}/api/logout",
+					"raw": "{{base_url}}/api/v1/logout",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"api",
+						"v1",
 						"logout"
 					]
 				}
