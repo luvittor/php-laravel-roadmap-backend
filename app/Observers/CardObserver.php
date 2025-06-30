@@ -23,6 +23,8 @@ class CardObserver
         $originalOrder = $card->getOriginal('order');
 
         if ($card->column_id !== $originalColumn) {
+            // move card to a different column or change its order
+
             Card::where('column_id', $originalColumn)
                 ->where('order', '>', $originalOrder)
                 ->decrement('order');
@@ -34,7 +36,18 @@ class CardObserver
                     ->where('order', '>=', $card->order)
                     ->increment('order');
             }
+
+        } elseif ($card->order === null) {
+            // if the order is not set, assign the next available order in the new column
+
+            $card->order = Card::where('column_id', $card->column_id)->max('order') + 1;
+            Card::where('column_id', $card->column_id)
+                ->where('order', '>=', $card->order)
+                ->increment('order');
+
         } elseif ($card->order !== $originalOrder) {
+            // if the order has changed, adjust the orders of neighboring cards
+
             if ($card->order > $originalOrder) {
                 Card::where('column_id', $card->column_id)
                     ->where('order', '<=', $card->order)
@@ -47,5 +60,12 @@ class CardObserver
                     ->increment('order');
             }
         }
+    }
+
+    public function deleting(Card $card): void
+    {
+        Card::where('column_id', $card->column_id)
+            ->where('order', '>', $card->order)
+            ->decrement('order');
     }
 }
