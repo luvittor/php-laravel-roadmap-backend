@@ -12,11 +12,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8000/ping",
+					"raw": "{{base_url}}/ping",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "8000",
 					"path": [
 						"ping"
 					]
@@ -56,11 +55,10 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:8000/api/register",
+					"raw": "{{base_url}}/api/register",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"register"
@@ -96,11 +94,10 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:8000/api/login",
+					"raw": "{{base_url}}/api/login",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"login"
@@ -124,14 +121,8 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "Bearer 8|sanctum_xRDfZZ02nUIjj7GtJRNRDHQWh0FHylfNxhuw2KYa8229633a",
+						"value": "Bearer {{auth_token}}",
 						"type": "text"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer 9|sanctum_hKQY051Ew9kEibWXu8BtwLL6Vm78d9eQLaJ2cU287276ea15",
-						"type": "text",
-						"disabled": true
 					}
 				],
 				"body": {
@@ -139,11 +130,10 @@
 					"formdata": []
 				},
 				"url": {
-					"raw": "localhost:8000/api/user",
+					"raw": "{{base_url}}/api/user",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"user"
@@ -164,22 +154,15 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "Bearer 8|sanctum_xRDfZZ02nUIjj7GtJRNRDHQWh0FHylfNxhuw2KYa8229633a",
+						"value": "Bearer {{auth_token}}",
 						"type": "text"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer 9|sanctum_hKQY051Ew9kEibWXu8BtwLL6Vm78d9eQLaJ2cU287276ea15",
-						"type": "text",
-						"disabled": true
 					}
 				],
 				"url": {
-					"raw": "localhost:8000/api/ping-auth",
+					"raw": "{{base_url}}/api/ping-auth",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"ping-auth"
@@ -200,13 +183,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "Bearer 8|sanctum_xRDfZZ02nUIjj7GtJRNRDHQWh0FHylfNxhuw2KYa8229633a",
-						"type": "text",
-						"disabled": true
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer 9|sanctum_hKQY051Ew9kEibWXu8BtwLL6Vm78d9eQLaJ2cU287276ea15",
+						"value": "Bearer {{auth_token}}",
 						"type": "text"
 					}
 				],
@@ -215,11 +192,10 @@
 					"formdata": []
 				},
 				"url": {
-					"raw": "localhost:8000/api/logout",
+					"raw": "{{base_url}}/api/logout",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"logout"
@@ -227,6 +203,28 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
