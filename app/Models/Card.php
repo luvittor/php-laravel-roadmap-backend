@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property int $id
  * @property int $column_id
+ * @property int $order
  * @property string $title
  * @property string $status
  */
@@ -20,6 +21,7 @@ class Card extends Model
 
     protected $fillable = [
         'column_id',
+        'order',
         'title',
         'status',
     ];
