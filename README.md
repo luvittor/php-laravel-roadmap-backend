@@ -55,4 +55,14 @@ Without this header Laravel may return an HTML response on validation failure.
 
 ### Postman Collection
 
-You can import the Postman collection for the API to test endpoints easily. Look for the file `php-laravel-roadmap.postman_collection.json`.
+You can import the Postman collection and environment variables provided in this repository to quickly set up your API testing environment.
+
+All of our Postman artifacts live in `docs/postman/`.
+
+- **Collection**  
+  `docs/postman/php-laravel-roadmap.postman_collection.json`  
+  ↪ Contains all of the endpoints, example bodies, headers, etc.
+
+- **Environment**  
+  `docs/postman/php-laravel-roadmap-localhost.postman_environment.json`  
+  ↪ Includes variables like `{{base_url}}`, `{{auth_token}}`, etc.  
