@@ -37,16 +37,12 @@ class CardObserver
                     ->increment('order');
             }
 
-        } elseif ($card->order === null) {
-            // if the order is not set, assign the next available order in the new column
-
-            $card->order = Card::where('column_id', $card->column_id)->max('order') + 1;
-            Card::where('column_id', $card->column_id)
-                ->where('order', '>=', $card->order)
-                ->increment('order');
-
         } elseif ($card->order !== $originalOrder) {
             // if the order has changed, adjust the orders of neighboring cards
+
+            if ($card->order === null) {
+                throw new \InvalidArgumentException('Order cannot be null when updating to the same column.');
+            }
 
             if ($card->order > $originalOrder) {
                 Card::where('column_id', $card->column_id)

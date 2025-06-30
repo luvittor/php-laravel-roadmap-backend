@@ -44,26 +44,19 @@ class CardOrderTest extends TestCase
         $this->assertEquals(3, $cardB->order);
     }
 
-    public function test_updating_within_column_and_null_order_appends_to_end(): void
+    public function test_updating_within_column_and_null_order_throws_exception(): void
     {
         $user = User::factory()->create();
         $column = Column::factory()->for($user)->create();
 
         $cardA = Card::factory()->for($column)->create(['order' => 1]);
-        $cardB = Card::factory()->for($column)->create(['order' => 2]);
-        $cardC = Card::factory()->for($column)->create(['order' => 3]);
+
+        // Expect exception when trying to set order to null
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Order cannot be null when updating to the same column.');
 
         // explicitly null out order
-        $cardB->update(['order' => null]);
-
-        $cardA->refresh();
-        $cardB->refresh();
-        $cardC->refresh();
-
-        // B should move to max+1 = 4
-        $this->assertEquals(1, $cardA->order);
-        $this->assertEquals(4, $cardB->order);
-        $this->assertEquals(3, $cardC->order);
+        $cardA->update(['order' => null]);
     }
 
     public function test_updating_within_column_and_increasing_order_shifts_neighbors(): void
