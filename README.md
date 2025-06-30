@@ -52,3 +52,7 @@ Accept: application/json
 ```
 
 Without this header Laravel may return an HTML response on validation failure.
+
+### Postman Collection
+
+You can import the Postman collection for the API to test endpoints easily. Look for the file `php-laravel-roadmap.postman_collection.json`.
