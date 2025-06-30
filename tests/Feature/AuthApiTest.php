@@ -37,6 +37,22 @@ class AuthApiTest extends TestCase
         $response->assertJsonStructure(['token']);
     }
 
+    public function test_register_validation_errors_are_returned_for_invalid_data(): void
+    {
+        $response = $this->postJson('/api/register', []);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['name', 'email', 'password']);
+    }
+
+    public function test_login_validation_errors_are_returned_for_invalid_data(): void
+    {
+        $response = $this->postJson('/api/login', []);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['email', 'password']);
+    }
+
     public function test_user_and_logout_endpoints_require_authentication(): void
     {
         $this->getJson('/api/user')->assertUnauthorized();

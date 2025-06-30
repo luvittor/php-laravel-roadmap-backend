@@ -42,3 +42,13 @@ php artisan serve --host=0.0.0.0 --port=8000
 ```
 
 - Open your browser at: http://localhost:8000/ping
+
+## API Usage
+
+To receive JSON validation errors when calling the API, include the header:
+
+```
+Accept: application/json
+```
+
+Without this header Laravel may return an HTML response on validation failure.
