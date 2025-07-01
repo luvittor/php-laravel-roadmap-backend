@@ -103,7 +103,7 @@ All of our Postman artifacts live in `docs/postman/`.
 
 Our PHPUnit suite uses an in‑memory SQLite database defined in `phpunit.xml`, so you do not need a separate database.
 
-Make sure dependencies are installed before running the commands below, instructions in [Development Environment](#de) section.
+Make sure dependencies are installed before running the commands below, instructions in [Development Environment](#development-environment) section.
 
 ### Docker
 
