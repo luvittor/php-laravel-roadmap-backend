@@ -19,7 +19,7 @@ class YearMonthRequest extends FormRequest
         ];
     }
 
-    protected function validationData(): array
+    public function validationData(): array
     {
         return array_merge($this->all(), $this->route()?->parameters() ?? []);
     }
