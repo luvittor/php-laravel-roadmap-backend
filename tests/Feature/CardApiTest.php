@@ -12,11 +12,6 @@ class CardApiTest extends TestCase
 {
     use RefreshDatabase;
 
-    private function authHeaders(User $user): array
-    {
-        $token = $user->createToken('api')->plainTextToken;
-        return ['Authorization' => 'Bearer ' . $token];
-    }
 
     public function test_fetch_cards_returns_cards_for_column(): void
     {
