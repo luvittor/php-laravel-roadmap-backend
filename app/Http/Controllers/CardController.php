@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Card;
 use App\Services\CardService;
 use App\Services\ColumnService;
+use App\Http\Requests\PositionRequest;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -56,13 +57,9 @@ class CardController extends Controller
         return response()->json($card);
     }
 
-    public function updatePosition(Request $request, Card $card)
+    public function updatePosition(PositionRequest $request, Card $card)
     {
-        $data = $request->validate([
-            'year'  => "required|integer|min:2000|max:4000",
-            'month' => 'required|integer|min:1|max:12',
-            'order' => 'required|integer|min:1',
-        ]);
+        $data = $request->validated();
 
         $column = $this->columns->findOrCreate($data['year'], $data['month'], $request->user()->id);
 

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\ColumnService;
-use Illuminate\Http\Request;
+use App\Http\Requests\YearMonthRequest;
 
 class ColumnController extends Controller
 {
@@ -11,9 +11,10 @@ class ColumnController extends Controller
     {
     }
 
-    public function cards(Request $request, int $year, int $month)
+    public function cards(YearMonthRequest $request)
     {
-        $column = $this->columns->findOrCreate($year, $month, $request->user()->id);
+        $data = $request->validated();
+        $column = $this->columns->findOrCreate($data['year'], $data['month'], $request->user()->id);
 
         $cards = $column->cards()
             ->orderBy('order')
