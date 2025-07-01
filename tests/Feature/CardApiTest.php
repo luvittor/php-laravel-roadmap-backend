@@ -20,52 +20,98 @@ class CardApiTest extends TestCase
 
     public function test_fetch_cards_returns_cards_for_column(): void
     {
+        // create a user and a column for that user
         $user = User::factory()->create();
         $column = Column::factory()->for($user)->create(['year' => 2025, 'month' => 6]);
-        $cardA = Card::factory()->for($column)->create(['order' => 1]);
-        $cardB = Card::factory()->for($column)->create(['order' => 2]);
 
+        // create cards for the column
+        $cardA = Card::factory()->for($column)->create([
+            'order' => 1,
+            'title' => 'Card A'
+        ]);
+
+        // order=1 again, this will shift the order of the cardA
+        $cardB = Card::factory()->for($column)->create([
+            'order' => 1,
+            'title' => 'Card B'
+        ]);
+
+        // create a third card with order 3
+        $cardC = Card::factory()->for($column)->create([
+            'order' => 3,
+            'title' => 'Card C'
+        ]);
+
+        // fetch cards for the column
         $res = $this->getJson("/api/v1/columns/{$column->year}/{$column->month}/cards", $this->authHeaders($user));
+
+        // assert the response
         $res->assertOk();
-        $res->assertJsonCount(2);
-        $res->assertJsonPath('0.id', $cardA->id);
-        $res->assertJsonPath('1.id', $cardB->id);
+        $res->assertJsonCount(3);
+
+        // check the cards are returned in the correct order, titles and ids
+        $res->assertJsonPath('0.id', $cardB->id);
+        $res->assertJsonPath('0.title', 'Card B');
+        $res->assertJsonPath('0.order', 1);
+
+        $res->assertJsonPath('1.id', $cardA->id);
+        $res->assertJsonPath('1.title', 'Card A');
+        $res->assertJsonPath('1.order', 2);
+
+        $res->assertJsonPath('2.id', $cardC->id);
+        $res->assertJsonPath('2.title', 'Card C');
+        $res->assertJsonPath('2.order', 3);
     }
 
     public function test_card_lifecycle(): void
     {
+        // create a user and a column for that user
         $user = User::factory()->create();
         $column1 = Column::factory()->for($user)->create(['year' => 2025, 'month' => 6]);
         $headers = $this->authHeaders($user);
 
-        $res = $this->postJson('/api/v1/cards', [
+        // data for the new card
+        $card = [
             'column_id' => $column1->id,
             'order' => 1,
             'title' => 'My Card',
-        ], $headers);
+        ];
+
+        // create a new card
+        $res = $this->postJson('/api/v1/cards', $card, $headers);
         $res->assertCreated();
         $cardId = $res->json('id');
 
-        $this->patchJson("/api/v1/cards/{$cardId}/title", ['title' => 'Updated'], $headers)
-            ->assertOk()
-            ->assertJsonPath('title', 'Updated');
+        // change the title of the card
+        $res = $this->patchJson("/api/v1/cards/{$cardId}/title", ['title' => 'Updated'], $headers);
+        $res->assertOk();
+        $res->assertJsonPath('title', 'Updated');
 
-        $this->patchJson("/api/v1/cards/{$cardId}/status", ['status' => 'completed'], $headers)
-            ->assertOk()
-            ->assertJsonPath('status', 'completed');
+        // change the status of the card
+        $res = $this->patchJson("/api/v1/cards/{$cardId}/status", ['status' => 'completed'], $headers);
+        $res->assertOk();
+        $res->assertJsonPath('status', 'completed');
 
-        $column2 = Column::factory()->for($user)->create(['year' => 2025, 'month' => 7]);
-        $this->patchJson("/api/v1/cards/{$cardId}/position", [
+        // move card to a different column, this will create a new column
+        $res = $this->patchJson("/api/v1/cards/{$cardId}/position", [
             'year' => 2025,
             'month' => 7,
             'order' => 1,
-        ], $headers)
-            ->assertOk()
-            ->assertJsonPath('column_id', $column2->id);
+        ], $headers);
+        $res->assertOk();
 
-        $this->deleteJson("/api/v1/cards/{$cardId}", [], $headers)
-            ->assertNoContent();
+        // check if the column_id has changed
+        $this->assertNotEquals($column1->id, $res->json('column_id'));
 
+        // delete the card
+        $res = $this->deleteJson("/api/v1/cards/{$cardId}", [], $headers);
+
+        // assert no content response
+        $res->assertNoContent();
+
+        // assert the card is deleted from the database
         $this->assertDatabaseMissing('cards', ['id' => $cardId]);
     }
+
+    
 }

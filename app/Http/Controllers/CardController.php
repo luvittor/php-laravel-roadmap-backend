@@ -13,6 +13,7 @@ class CardController extends Controller
     public function __construct(private CardService $cards, private ColumnService $columns)
     {
     }
+
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -58,16 +59,12 @@ class CardController extends Controller
     public function updatePosition(Request $request, Card $card)
     {
         $data = $request->validate([
-            'year'  => 'required|integer',
-            'month' => 'required|integer',
+            'year'  => "required|integer|min:2000|max:4000",
+            'month' => 'required|integer|min:1|max:12',
             'order' => 'required|integer|min:1',
         ]);
 
-        $column = $this->columns->findForUser($data['year'], $data['month'], $request->user()->id);
-
-        if (! $column) {
-            return response()->json(['message' => 'Column not found'], Response::HTTP_NOT_FOUND);
-        }
+        $column = $this->columns->findOrCreate($data['year'], $data['month'], $request->user()->id);
 
         $card = $this->cards->updatePosition($card, $column, $data['order']);
 
