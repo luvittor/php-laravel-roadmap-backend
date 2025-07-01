@@ -87,7 +87,7 @@ All of our Postman artifacts live in `docs/postman/`.
   `docs/postman/php-laravel-roadmap-localhost.postman_environment.json`
   ↪ Includes variables like `{{base_url}}`, `{{auth_token}}`, etc.
 
-### Card API Endpoints
+### Columns and Cards API Endpoints
 
 | Method   | Endpoint                        | Description                       |
 | -------- | ------------------------------- | --------------------------------- |
