@@ -78,3 +78,24 @@ All of our Postman artifacts live in `docs/postman/`.
 | `PATCH` | `/cards/{id}/status` | Update only the card status |
 | `PATCH` | `/cards/{id}/position` | Move card to another column/order |
 | `DELETE` | `/cards/{id}` | Delete a card |
+
+## Running Tests
+
+Our test suite is powered by PHPUnit. Make sure all dependencies are installed before running the commands below.
+
+### Docker
+
+If you are using the Docker environment, execute:
+
+```bash
+docker-compose run --rm app php artisan test
+```
+
+### Host Machine
+
+To run tests directly on your host machine, install PHP \(>= 8.2\) and Composer, then install the project dependencies:
+
+```bash
+composer install
+php artisan test
+```
