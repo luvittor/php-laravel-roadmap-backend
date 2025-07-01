@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class UpdateCardPositionRequest extends YearMonthRequest
+class PositionRequest extends YearMonthRequest
 {
     public function rules(): array
     {

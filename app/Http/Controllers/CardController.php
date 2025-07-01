@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Card;
 use App\Services\CardService;
 use App\Services\ColumnService;
-use App\Http\Requests\UpdateCardPositionRequest;
+use App\Http\Requests\PositionRequest;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -57,7 +57,7 @@ class CardController extends Controller
         return response()->json($card);
     }
 
-    public function updatePosition(UpdateCardPositionRequest $request, Card $card)
+    public function updatePosition(PositionRequest $request, Card $card)
     {
         $data = $request->validated();
 
