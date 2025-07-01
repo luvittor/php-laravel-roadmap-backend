@@ -64,5 +64,17 @@ All of our Postman artifacts live in `docs/postman/`.
   ↪ Contains all of the endpoints, example bodies, headers, etc.
 
 - **Environment**  
-  `docs/postman/php-laravel-roadmap-localhost.postman_environment.json`  
-  ↪ Includes variables like `{{base_url}}`, `{{auth_token}}`, etc.  
+  `docs/postman/php-laravel-roadmap-localhost.postman_environment.json`
+  ↪ Includes variables like `{{base_url}}`, `{{auth_token}}`, etc.
+
+### Card API Endpoints
+
+| Method | Endpoint | Description |
+| ------ | -------- | ----------- |
+| `GET` | `/columns/{year}/{month}/cards` | List cards for a given column |
+| `POST` | `/cards` | Create a new card |
+| `GET` | `/cards/{id}` | Retrieve a card |
+| `PATCH` | `/cards/{id}/title` | Update only the card title |
+| `PATCH` | `/cards/{id}/status` | Update only the card status |
+| `PATCH` | `/cards/{id}/position` | Move card to another column/order |
+| `DELETE` | `/cards/{id}` | Delete a card |
