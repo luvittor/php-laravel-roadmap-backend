@@ -63,6 +63,24 @@ php artisan serve
 
 - Open your browser at: http://localhost:8000/ping
 
+### Running Tests
+
+After setting up the application, you can run the tests to ensure everything is working correctly.
+
+Our PHPUnit suite uses an in‑memory SQLite database defined in `phpunit.xml`, so you do not need a separate database.
+
+#### Docker
+
+```bash
+docker exec -it php-laravel-roadmap-backend php artisan test
+```
+
+#### Host Machine
+
+```bash
+php artisan test
+```
+
 ## API Usage
 
 To receive JSON validation errors when calling the API, include the header:
@@ -99,21 +117,3 @@ All of our Postman artifacts live in `docs/postman/`.
 | `PATCH`  | `/cards/{id}/position`          | Move card to another column/order |
 | `DELETE` | `/cards/{id}`                   | Delete a card                     |
 
-## Running Tests
-
-Our PHPUnit suite uses an in‑memory SQLite database defined in `phpunit.xml`, so you do not need a separate database.
-
-Make sure dependencies are installed before running the commands below, instructions in [Development Environment](#development-environment) section.
-
-### Docker
-
-```bash
-docker exec -it php-laravel-roadmap-backend php artisan test
-```
-
-### Host Machine
-
-
-```bash
-php artisan test
-```
