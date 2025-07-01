@@ -113,5 +113,32 @@ class CardApiTest extends TestCase
         $this->assertDatabaseMissing('cards', ['id' => $cardId]);
     }
 
+    public function test_cards_endpoint_returns_validation_errors_for_invalid_year_or_month(): void
+    {
+        $user = User::factory()->create();
+        $headers = $this->authHeaders($user);
+
+        $res = $this->getJson('/api/v1/columns/1999/13/cards', $headers);
+        $res->assertStatus(422);
+        $res->assertJsonValidationErrors(['year', 'month']);
+    }
+
+    public function test_update_position_returns_validation_errors_for_invalid_year_or_month(): void
+    {
+        $user = User::factory()->create();
+        $column = Column::factory()->for($user)->create(['year' => 2025, 'month' => 6]);
+        $card = Card::factory()->for($column)->create(['order' => 1]);
+        $headers = $this->authHeaders($user);
+
+        $res = $this->patchJson("/api/v1/cards/{$card->id}/position", [
+            'year' => 1999,
+            'month' => 13,
+            'order' => 1,
+        ], $headers);
+
+        $res->assertStatus(422);
+        $res->assertJsonValidationErrors(['year', 'month']);
+    }
+
     
 }
