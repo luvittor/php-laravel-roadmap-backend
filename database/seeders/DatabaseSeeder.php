@@ -16,12 +16,27 @@ class DatabaseSeeder extends Seeder
     {
         // Create users
         $users_random = rand(5, 10);
-        User::factory($users_random)->create();
+        $newUsers = User::factory($users_random)->create();
        
-        // Create columns for each user
-        User::all()->each(function ($user) {
-            $columns_random = rand(0, 24);
-            $user->columns()->saveMany(Column::factory($columns_random)->make());
+        // Create columns for each user without duplicating year/month pairs
+        $years = range(now()->year - 1, now()->year + 1);
+        $months = range(1, 12);
+
+        $newUsers->each(function ($user) use ($years, $months) {
+            $pairs = [];
+            foreach ($years as $y) {
+                foreach ($months as $m) {
+                    $pairs[] = ['year' => $y, 'month' => $m];
+                }
+            }
+
+            shuffle($pairs);
+            $columnsCount = rand(0, count($pairs));
+
+            for ($i = 0; $i < $columnsCount; $i++) {
+                $pair = $pairs[$i];
+                Column::factory()->for($user)->create($pair);
+            }
         });
 
         // Create cards for each column
