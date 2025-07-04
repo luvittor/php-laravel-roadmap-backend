@@ -14,13 +14,16 @@ class ColumnController extends Controller
     public function cards(YearMonthRequest $request)
     {
         $data = $request->validated();
-        $column = $this->columns->findOrCreate($data['year'], $data['month'], $request->user()->id);
+        $column = $this->columns->firstOrCreate($data['year'], $data['month'], $request->user()->id);
 
         $cards = $column->cards()
             ->orderBy('order')
             ->orderBy('title')
             ->get();
 
-        return response()->json($cards);
+        return response()->json([
+            'column' => $column,
+            'cards' => $cards,
+        ]);
     }
 }

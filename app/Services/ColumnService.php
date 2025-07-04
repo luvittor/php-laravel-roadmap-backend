@@ -6,7 +6,7 @@ use App\Models\Column;
 
 class ColumnService
 {
-public function findOrCreate(int $year, int $month, int $userId): ?Column
+public function firstOrCreate(int $year, int $month, int $userId): ?Column
 {
     try {
         return Column::firstOrCreate([

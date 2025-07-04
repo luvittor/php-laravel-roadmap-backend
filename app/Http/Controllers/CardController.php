@@ -61,7 +61,7 @@ class CardController extends Controller
     {
         $data = $request->validated();
 
-        $column = $this->columns->findOrCreate($data['year'], $data['month'], $request->user()->id);
+        $column = $this->columns->firstOrCreate($data['year'], $data['month'], $request->user()->id);
 
         $card = $this->cards->updatePosition($card, $column, $data['order']);
 

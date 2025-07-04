@@ -42,20 +42,38 @@ class CardApiTest extends TestCase
 
         // assert the response
         $res->assertOk();
-        $res->assertJsonCount(3);
+        $res->assertJsonCount(2);
+
+        // check the response structure
+        $res->assertJsonStructure([
+            'column' => [
+                'id',
+                'year',
+                'month',
+                'user_id',
+            ],
+            'cards' => [
+                '*' => [    
+                    'id',
+                    'title',
+                    'order',
+                    'column_id',
+                ],
+            ],
+        ]);
 
         // check the cards are returned in the correct order, titles and ids
-        $res->assertJsonPath('0.id', $cardB->id);
-        $res->assertJsonPath('0.title', 'Card B');
-        $res->assertJsonPath('0.order', 1);
+        $res->assertJsonPath('cards.0.id', $cardB->id);
+        $res->assertJsonPath('cards.0.title', 'Card B');
+        $res->assertJsonPath('cards.0.order', 1);
 
-        $res->assertJsonPath('1.id', $cardA->id);
-        $res->assertJsonPath('1.title', 'Card A');
-        $res->assertJsonPath('1.order', 2);
+        $res->assertJsonPath('cards.1.id', $cardA->id);
+        $res->assertJsonPath('cards.1.title', 'Card A');
+        $res->assertJsonPath('cards.1.order', 2);
 
-        $res->assertJsonPath('2.id', $cardC->id);
-        $res->assertJsonPath('2.title', 'Card C');
-        $res->assertJsonPath('2.order', 3);
+        $res->assertJsonPath('cards.2.id', $cardC->id);
+        $res->assertJsonPath('cards.2.title', 'Card C');
+        $res->assertJsonPath('cards.2.order', 3);
     }
 
     public function test_card_lifecycle(): void
