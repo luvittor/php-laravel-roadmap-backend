@@ -3,10 +3,19 @@
 namespace App\Policies;
 
 use App\Models\Card;
+use App\Models\Column;
 use App\Models\User;
 
 class CardPolicy
 {
+    /**
+     * Determine whether the user can create a card in the column.
+     */
+    public function create(User $user, Column $column): bool
+    {
+        return $column->user_id === $user->id;
+    }
+
     /**
      * Determine whether the user can view the card.
      */

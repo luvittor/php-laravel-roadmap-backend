@@ -20,13 +20,25 @@ class CardAuthorizationTest extends TestCase
         $card = Card::factory()->for($column)->create(['order' => 1]);
         $other = User::factory()->create();
 
-        return [$card, $owner, $other];
+        return [$column, $card, $owner, $other];
     }
 
     /* Route middleware */
+    public function test_route_blocks_creating_card_into_foreign_column(): void
+    {
+        [$column, , , $other] = $this->setUpCard();
+
+        $res = $this->postJson(
+            '/api/v1/cards',
+            ['column_id' => $column->id, 'order' => 1, 'title' => 'Test Card'],
+            $this->authHeaders($other)
+        );
+        $res->assertForbidden();
+    }
+    
     public function test_route_blocks_viewing_foreign_card(): void
     {
-        [$card, , $other] = $this->setUpCard();
+        [, $card, , $other] = $this->setUpCard();
 
         $res = $this->getJson("/api/v1/cards/{$card->id}", $this->authHeaders($other));
         $res->assertForbidden();
@@ -34,7 +46,7 @@ class CardAuthorizationTest extends TestCase
 
     public function test_route_blocks_updating_title_of_foreign_card(): void
     {
-        [$card, , $other] = $this->setUpCard();
+        [, $card, , $other] = $this->setUpCard();
 
         $res = $this->patchJson(
             "/api/v1/cards/{$card->id}/title",
@@ -46,7 +58,7 @@ class CardAuthorizationTest extends TestCase
 
     public function test_route_blocks_updating_status_of_foreign_card(): void
     {
-        [$card, , $other] = $this->setUpCard();
+        [, $card, , $other] = $this->setUpCard();
 
         $res = $this->patchJson(
             "/api/v1/cards/{$card->id}/status",
@@ -58,7 +70,7 @@ class CardAuthorizationTest extends TestCase
 
     public function test_route_blocks_updating_position_of_foreign_card(): void
     {
-        [$card, , $other] = $this->setUpCard();
+        [, $card, , $other] = $this->setUpCard();
 
         $res = $this->patchJson(
             "/api/v1/cards/{$card->id}/position",
@@ -70,7 +82,7 @@ class CardAuthorizationTest extends TestCase
 
     public function test_route_blocks_deleting_foreign_card(): void
     {
-        [$card, , $other] = $this->setUpCard();
+        [, $card, , $other] = $this->setUpCard();
 
         $res = $this->deleteJson(
             "/api/v1/cards/{$card->id}",
@@ -81,9 +93,23 @@ class CardAuthorizationTest extends TestCase
     }
 
     /* Controller authorize */
+    public function test_controller_blocks_creating_card_into_foreign_column(): void
+    {
+        [$column, , , $other] = $this->setUpCard();
+        $this->withoutMiddleware([Authorize::class]);
+
+        $res = $this->postJson(
+            '/api/v1/cards',
+            ['column_id' => $column->id, 'order' => 1, 'title' => 'Test Card'],
+            $this->authHeaders($other)
+        );
+        $res->assertForbidden();
+    }
+
+
     public function test_controller_blocks_viewing_foreign_card(): void
     {
-        [$card, , $other] = $this->setUpCard();
+        [, $card, , $other] = $this->setUpCard();
         $this->withoutMiddleware([Authorize::class]);
 
         $res = $this->getJson("/api/v1/cards/{$card->id}", $this->authHeaders($other));
@@ -92,7 +118,7 @@ class CardAuthorizationTest extends TestCase
 
     public function test_controller_blocks_updating_title_of_foreign_card(): void
     {
-        [$card, , $other] = $this->setUpCard();
+        [, $card, , $other] = $this->setUpCard();
         $this->withoutMiddleware([Authorize::class]);
 
         $res = $this->patchJson(
@@ -105,7 +131,7 @@ class CardAuthorizationTest extends TestCase
 
     public function test_controller_blocks_updating_status_of_foreign_card(): void
     {
-        [$card, , $other] = $this->setUpCard();
+        [, $card, , $other] = $this->setUpCard();
         $this->withoutMiddleware([Authorize::class]);
 
         $res = $this->patchJson(
@@ -118,7 +144,7 @@ class CardAuthorizationTest extends TestCase
 
     public function test_controller_blocks_updating_position_of_foreign_card(): void
     {
-        [$card, , $other] = $this->setUpCard();
+        [, $card, , $other] = $this->setUpCard();
         $this->withoutMiddleware([Authorize::class]);
 
         $res = $this->patchJson(
@@ -131,7 +157,7 @@ class CardAuthorizationTest extends TestCase
 
     public function test_controller_blocks_deleting_foreign_card(): void
     {
-        [$card, , $other] = $this->setUpCard();
+        [, $card, , $other] = $this->setUpCard();
         $this->withoutMiddleware([Authorize::class]);
 
         $res = $this->deleteJson(
