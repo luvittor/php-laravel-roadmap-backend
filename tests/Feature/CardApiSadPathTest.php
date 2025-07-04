@@ -79,6 +79,14 @@ class CardApiSadPathTest extends TestCase
             ->assertJsonValidationErrors(['title']);
     }
 
+    public function test_update_title_returns_not_found_for_invalid_card_id(): void
+    {
+        $user = User::factory()->create();
+
+        $this->patchJson('/api/v1/cards/999/title', ['title' => 'New'], $this->authHeaders($user))
+            ->assertNotFound();
+    }
+
     public function test_update_status_requires_authentication(): void
     {
         $card = Card::factory()->for(Column::factory()->for(User::factory()->create()))->create();
@@ -95,6 +103,14 @@ class CardApiSadPathTest extends TestCase
         $this->patchJson("/api/v1/cards/{$card->id}/status", ['status' => 'bad'], $this->authHeaders($user))
             ->assertStatus(422)
             ->assertJsonValidationErrors(['status']);
+    }
+
+    public function test_update_status_returns_not_found_for_invalid_card_id(): void
+    {
+        $user = User::factory()->create();
+
+        $this->patchJson('/api/v1/cards/999/status', ['status' => 'completed'], $this->authHeaders($user))
+            ->assertNotFound();
     }
 
     public function test_update_position_requires_authentication(): void

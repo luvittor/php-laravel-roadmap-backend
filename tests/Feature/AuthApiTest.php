@@ -37,6 +37,19 @@ class AuthApiTest extends TestCase
         $response->assertJsonStructure(['token']);
     }
 
+    public function test_login_returns_error_for_invalid_credentials(): void
+    {
+        $user = User::factory()->create(['password' => Hash::make('secret123')]);
+
+        $response = $this->postJson('/api/v1/login', [
+            'email' => $user->email,
+            'password' => 'wrong-password',
+        ]);
+
+        $response->assertStatus(401);
+        $response->assertExactJson(['message' => 'Invalid credentials']);
+    }
+
     public function test_register_validation_errors_are_returned_for_invalid_data(): void
     {
         $response = $this->postJson('/api/v1/register', []);

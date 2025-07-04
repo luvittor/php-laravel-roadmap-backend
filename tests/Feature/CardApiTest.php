@@ -76,6 +76,23 @@ class CardApiTest extends TestCase
         $res->assertJsonPath('cards.2.order', 3);
     }
 
+    public function test_show_card_returns_card(): void
+    {
+        $user = User::factory()->create();
+        $column = Column::factory()->for($user)->create(['year' => 2025, 'month' => 6]);
+        $card = Card::factory()->for($column)->create(['order' => 1, 'title' => 'My Card']);
+
+        $res = $this->getJson("/api/v1/cards/{$card->id}", $this->authHeaders($user));
+
+        $res->assertOk();
+        $res->assertJson([
+            'id' => $card->id,
+            'title' => 'My Card',
+            'order' => 1,
+            'column_id' => $column->id,
+        ]);
+    }
+
     public function test_card_lifecycle(): void
     {
         // create a user and a column for that user
