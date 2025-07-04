@@ -24,7 +24,7 @@ class CardController extends Controller
         ]);
 
         $column = $this->columns->find($data['column_id']);
-        $this->authorize('create', $column);
+        $this->authorize('create', [Card::class, $column]);
 
         $card = $this->cards->create($data);
 
