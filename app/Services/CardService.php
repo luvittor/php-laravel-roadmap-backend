@@ -34,6 +34,10 @@ class CardService
             'column_id' => $column->id,
             'order'     => $order,
         ]);
+
+        // Reload the column relationship
+        $card->load('column');
+
         return $card;
     }
 
