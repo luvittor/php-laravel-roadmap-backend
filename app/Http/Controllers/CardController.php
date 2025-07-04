@@ -32,11 +32,15 @@ class CardController extends Controller
 
     public function show(Card $card)
     {
+        $this->authorize('view', $card);
+
         return response()->json($card);
     }
 
     public function updateTitle(Request $request, Card $card)
     {
+        $this->authorize('update', $card);
+
         $data = $request->validate([
             'title' => 'required|string|min:0|max:255',
         ]);
@@ -48,6 +52,8 @@ class CardController extends Controller
 
     public function updateStatus(Request $request, Card $card)
     {
+        $this->authorize('update', $card);
+
         $data = $request->validate([
             'status' => 'required|in:not_started,in_progress,completed',
         ]);
@@ -59,6 +65,8 @@ class CardController extends Controller
 
     public function updatePosition(PositionRequest $request, Card $card)
     {
+        $this->authorize('update', $card);
+
         $data = $request->validated();
 
         $column = $this->columns->firstOrCreate($data['year'], $data['month'], $request->user()->id);
@@ -70,6 +78,8 @@ class CardController extends Controller
 
     public function destroy(Card $card)
     {
+        $this->authorize('delete', $card);
+
         $this->cards->delete($card);
 
         return response()->noContent();
