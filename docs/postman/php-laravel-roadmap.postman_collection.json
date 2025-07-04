@@ -256,11 +256,6 @@
 						"key": "Authorization",
 						"value": "Bearer {{auth_token}}",
 						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
 					}
 				],
 				"body": {
