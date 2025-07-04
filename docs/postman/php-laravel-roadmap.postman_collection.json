@@ -8,6 +8,27 @@
 	"item": [
 		{
 			"name": "ping",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Check if the response status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Check if the response body is equal to 'pong'\r",
+							"pm.test(\"Response body is 'pong'\", function () {\r",
+							"    pm.expect(pm.response.text()).to.eql('pong');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -25,6 +46,44 @@
 		},
 		{
 			"name": "register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 201) {\r",
+							"    pm.environment.set(\"auth_token\", pm.response.json().token);\r",
+							"}\r",
+							"\r",
+							"// Parse the response JSON\r",
+							"const response = pm.response.json();\r",
+							"\r",
+							"// Test for status code\r",
+							"pm.test(\"Status code is 201\", () => {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"// Test for token existence\r",
+							"pm.test(\"Token exists in response\", () => {\r",
+							"    pm.expect(response.token).to.exist;\r",
+							"});\r",
+							"\r",
+							"// Test for token type\r",
+							"pm.test(\"Token is a string\", () => {\r",
+							"    pm.expect(response.token).to.be.a('string');\r",
+							"});\r",
+							"\r",
+							"// Test for token format\r",
+							"pm.test(\"Token matches expected format\", () => {\r",
+							"    pm.expect(response.token).to.match(/^\\d+\\|sanctum_[A-Za-z0-9]+$/);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
@@ -70,6 +129,44 @@
 		},
 		{
 			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 200) {\r",
+							"    pm.environment.set(\"auth_token\", pm.response.json().token);\r",
+							"}\r",
+							"\r",
+							"const response = pm.response.json();\r",
+							"\r",
+							"// Test for status code\r",
+							"pm.test('Status code is 200', () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test for token existence\r",
+							"pm.test('Token exists in response', () => {\r",
+							"    pm.expect(response.token).to.exist;\r",
+							"});\r",
+							"\r",
+							"// Test for token type\r",
+							"pm.test('Token is a string', () => {\r",
+							"    pm.expect(response.token).to.be.a('string');\r",
+							"});\r",
+							"\r",
+							"// Test for token format\r",
+							"pm.test(\"Token matches expected format\", () => {\r",
+							"    pm.expect(response.token).to.match(/^\\d+\\|sanctum_[A-Za-z0-9]+$/);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
@@ -110,6 +207,48 @@
 		},
 		{
 			"name": "user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test for status code\r",
+							"pm.test('Status code is 200', () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Parse the JSON response\r",
+							"const response = pm.response.json();\r",
+							"\r",
+							"// Test for presence of required fields in the response\r",
+							"pm.test('Response has required fields', () => {\r",
+							"    pm.expect(response).to.have.all.keys('id', 'name', 'email', 'email_verified_at', 'created_at', 'updated_at');\r",
+							"});\r",
+							"\r",
+							"// Test for types of the fields in the response\r",
+							"pm.test('Field types are correct', () => {\r",
+							"    pm.expect(response.id).to.be.a('number');\r",
+							"    pm.expect(response.name).to.be.a('string');\r",
+							"    pm.expect(response.email).to.be.a('string');\r",
+							"    // pm.expect(response.email_verified_at).to.be.null; // or check for 'null' explicitly\r",
+							"    pm.expect(response.created_at).to.be.a('string');\r",
+							"    pm.expect(response.updated_at).to.be.a('string');\r",
+							"});\r",
+							"\r",
+							"// Test for format of created_at and updated_at fields\r",
+							"pm.test('Date fields are in ISO format', () => {\r",
+							"    const created_at = new Date(response.created_at);\r",
+							"    pm.expect(!isNaN(created_at.getTime())).to.be.true;\r",
+							"    const updated_at = new Date(response.updated_at);\r",
+							"    pm.expect(!isNaN(updated_at.getTime())).to.be.true;\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -147,6 +286,27 @@
 		},
 		{
 			"name": "auth ping",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code is 200', () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test('Response message is valid', () => {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.message).to.exist;\r",
+							"    pm.expect(response.message).to.be.a('string');\r",
+							"    pm.expect(response.message).to.equal('authenticated pong');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [
@@ -177,6 +337,27 @@
 		},
 		{
 			"name": "logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 200) {\r",
+							"    pm.environment.set(\"auth_token\", \"\");\r",
+							"}\r",
+							"\r",
+							"pm.test('Response message is valid', () => {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.message).to.exist;\r",
+							"    pm.expect(response.message).to.be.a('string');\r",
+							"    pm.expect(response.message).to.equal('Logged out');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
@@ -218,7 +399,51 @@
 						"exec": [
 							"if (pm.response.code === 200) {\r",
 							"    pm.environment.set(\"column_id\", pm.response.json().column.id);\r",
-							"}"
+							"}\r",
+							"\r",
+							"const response = pm.response.json();\r",
+							"\r",
+							"// Test for status code\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test for column object properties\r",
+							"pm.test(\"Column object has required properties\", () => {\r",
+							"    const column = response.column;\r",
+							"    pm.expect(column).to.have.all.keys(\"id\", \"year\", \"month\", \"user_id\", \"created_at\", \"updated_at\");\r",
+							"    pm.expect(column.id).to.be.a(\"number\");\r",
+							"    pm.expect(column.year).to.be.a(\"number\")\r",
+							"    pm.expect(column.month).to.be.a(\"number\")\r",
+							"    pm.expect(column.user_id).to.be.a(\"number\");\r",
+							"    pm.expect(column.created_at).to.be.a(\"string\");\r",
+							"    pm.expect(column.updated_at).to.be.a(\"string\");\r",
+							"\r",
+							"    const created_at = new Date(column.created_at);\r",
+							"    pm.expect(!isNaN(created_at.getTime())).to.be.true;\r",
+							"    const updated_at = new Date(column.updated_at);\r",
+							"    pm.expect(!isNaN(updated_at.getTime())).to.be.true;\r",
+							"});\r",
+							"\r",
+							"// Test for cards array\r",
+							"pm.test(\"Cards array is present and has correct properties\", () => {\r",
+							"    pm.expect(response.cards).to.be.an(\"array\").that.is.not.empty;\r",
+							"    response.cards.forEach(card => {\r",
+							"        pm.expect(card).to.have.all.keys(\"id\", \"column_id\", \"order\", \"title\", \"status\", \"created_at\", \"updated_at\");\r",
+							"        pm.expect(card.id).to.be.a(\"number\");\r",
+							"        pm.expect(card.column_id).to.equal(pm.environment.get(\"column_id\"));\r",
+							"        pm.expect(card.order).to.be.a(\"number\");\r",
+							"        pm.expect(card.title).to.be.a(\"string\");\r",
+							"        pm.expect(card.status).to.be.oneOf([\"not_started\", \"in_progress\", \"completed\"]);\r",
+							"        pm.expect(card.created_at).to.be.a(\"string\");\r",
+							"        pm.expect(card.updated_at).to.be.a(\"string\");\r",
+							"\r",
+							"        const created_at = new Date(card.created_at);\r",
+							"        pm.expect(!isNaN(created_at.getTime())).to.be.true;\r",
+							"        const updated_at = new Date(card.updated_at);\r",
+							"        pm.expect(!isNaN(updated_at.getTime())).to.be.true;\r",
+							"    });\r",
+							"});"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -265,7 +490,35 @@
 						"exec": [
 							"if (pm.response.code === 201) {\r",
 							"    pm.environment.set(\"card_id\", pm.response.json().id);\r",
-							"}"
+							"}\r",
+							"\r",
+							"const response = pm.response.json();\r",
+							"\r",
+							"// Test for status code\r",
+							"pm.test(\"Status code is 201\", () => {\r",
+							"    pm.expect(pm.response.code).to.equal(201);\r",
+							"});\r",
+							"\r",
+							"// Test for response body properties\r",
+							"pm.test(\"Response body has required properties\", () => {\r",
+							"    pm.expect(response).to.have.all.keys('column_id', 'order', 'title', 'updated_at', 'created_at', 'id');\r",
+							"});\r",
+							"\r",
+							"// Test for data types of properties\r",
+							"pm.test(\"Data types of response properties are correct\", () => {\r",
+							"    pm.expect(response.column_id).to.be.a('string');\r",
+							"    pm.expect(response.order).to.be.a('string');\r",
+							"    pm.expect(response.title).to.be.a('string');\r",
+							"    pm.expect(response.updated_at).to.be.a('string');\r",
+							"    pm.expect(response.created_at).to.be.a('string');\r",
+							"    pm.expect(response.id).to.be.a('number');\r",
+							"\r",
+							"    const created_at = new Date(response.created_at);\r",
+							"    pm.expect(!isNaN(created_at.getTime())).to.be.true;\r",
+							"    const updated_at = new Date(response.updated_at);\r",
+							"    pm.expect(!isNaN(updated_at.getTime())).to.be.true;\r",
+							"});\r",
+							""
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -322,6 +575,56 @@
 		},
 		{
 			"name": "show card",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"\r",
+							"// Test for status code\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"});\r",
+							"\r",
+							"// Test for response body structure\r",
+							"pm.test(\"Response body has required properties and types\", () => {\r",
+							"    pm.expect(response).to.have.all.keys('id', 'column_id', 'order', 'title', 'status', 'created_at', 'updated_at', 'column');\r",
+							"\r",
+							"    pm.expect(response.id).to.be.a('number');\r",
+							"    pm.expect(response.column_id).to.be.a('number');\r",
+							"    pm.expect(response.order).to.be.a('number');\r",
+							"    pm.expect(response.title).to.be.a('string');\r",
+							"    pm.expect(response.status).to.be.a('string');\r",
+							"    pm.expect(response.created_at).to.be.a('string');\r",
+							"    pm.expect(response.updated_at).to.be.a('string');\r",
+							"\r",
+							"    const created_at = new Date(response.created_at);\r",
+							"    pm.expect(!isNaN(created_at.getTime())).to.be.true;\r",
+							"    const updated_at = new Date(response.updated_at);\r",
+							"    pm.expect(!isNaN(updated_at.getTime())).to.be.true;\r",
+							"});\r",
+							"\r",
+							"// Test for column object structure\r",
+							"pm.test(\"Column object has required properties and types\", () => {\r",
+							"    pm.expect(response.column).to.have.all.keys('id', 'year', 'month', 'user_id', 'created_at', 'updated_at');\r",
+							"\r",
+							"    pm.expect(response.column.id).to.be.a('number');\r",
+							"    pm.expect(response.column.year).to.be.a('number');\r",
+							"    pm.expect(response.column.month).to.be.a('number')\r",
+							"    pm.expect(response.column.user_id).to.be.a('number');\r",
+							"\r",
+							"    const created_at = new Date(response.column.created_at);\r",
+							"    pm.expect(!isNaN(created_at.getTime())).to.be.true;\r",
+							"    const updated_at = new Date(response.column.updated_at);\r",
+							"    pm.expect(!isNaN(updated_at.getTime())).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [
@@ -353,6 +656,23 @@
 		},
 		{
 			"name": "update card title",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"\r",
+							"// Test for status code\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "PATCH",
 				"header": [
@@ -394,6 +714,23 @@
 		},
 		{
 			"name": "update card status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"\r",
+							"// Test for status code\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "PATCH",
 				"header": [
@@ -435,6 +772,23 @@
 		},
 		{
 			"name": "update card position",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"\r",
+							"// Test for status code\r",
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "PATCH",
 				"header": [
@@ -476,6 +830,22 @@
 		},
 		{
 			"name": "delete card",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Check if the response status code is 200\r",
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "DELETE",
 				"header": [
@@ -523,6 +893,16 @@
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
+					"// Test for response time\r",
+					"pm.test('Response time is less than 1000ms', () => {\r",
+					"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+					"});\r",
+					"\r",
+					"if (pm.request.url.getPath().endsWith('ping') == false && pm.request.method !== \"DELETE\") {\r",
+					"    pm.test('Content-Type is application/json', function () {\r",
+					"        pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+					"    });\r",
+					"}\r",
 					""
 				]
 			}
