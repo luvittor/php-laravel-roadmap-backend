@@ -23,6 +23,9 @@ class CardController extends Controller
             'title'     => 'nullable|string',
         ]);
 
+        $column = $this->columns->find($data['column_id']);
+        $this->authorize('create', $column);
+
         $card = $this->cards->create($data);
 
         return response()
