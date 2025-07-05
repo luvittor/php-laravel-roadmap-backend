@@ -99,7 +99,7 @@ All of our Postman artifacts live in `docs/postman/`.
 
 - **Collection**  
   `docs/postman/php-laravel-roadmap.postman_collection.json`  
-  ↪ Contains all of the endpoints, example bodies, headers, etc.
+  ↪ Contains all of the endpoints, example bodies, headers, tests, flows, etc.
 
 - **Environment**  
   `docs/postman/php-laravel-roadmap-localhost.postman_environment.json`
