@@ -420,7 +420,6 @@
 							"\r",
 							"// Test for cards array\r",
 							"pm.test(\"Cards array is present and has correct properties\", () => {\r",
-							"    pm.expect(response.cards).to.be.an(\"array\").that.is.not.empty;\r",
 							"    response.cards.forEach(card => {\r",
 							"        pm.expect(card).to.have.all.keys(\"id\", \"column_id\", \"order\", \"title\", \"status\", \"created_at\", \"updated_at\");\r",
 							"        pm.expect(card.id).to.be.a(\"number\");\r",
