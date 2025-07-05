@@ -20,6 +20,9 @@ class ColumnServiceParallelTest extends TestCase
      */
     public function test_first_or_create_is_process_safe(): void
     {
+        if (!function_exists('pcntl_fork')) {
+            $this->markTestSkipped('pcntl extension is not available.');
+        }
         // Use a file based SQLite database so that both processes share it
         $dbPath = database_path('parallel_test.sqlite');
         touch($dbPath);
