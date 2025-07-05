@@ -336,61 +336,6 @@
 			"response": []
 		},
 		{
-			"name": "logout",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"if (pm.response.code === 200) {\r",
-							"    pm.environment.set(\"auth_token\", \"\");\r",
-							"}\r",
-							"\r",
-							"pm.test('Response message is valid', () => {\r",
-							"    const response = pm.response.json();\r",
-							"    pm.expect(response.message).to.exist;\r",
-							"    pm.expect(response.message).to.be.a('string');\r",
-							"    pm.expect(response.message).to.equal('Logged out');\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{auth_token}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "formdata",
-					"formdata": []
-				},
-				"url": {
-					"raw": "{{base_url}}/api/v1/logout",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"logout"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "get cards",
 			"event": [
 				{
@@ -501,7 +446,7 @@
 							"\r",
 							"// Test for response body properties\r",
 							"pm.test(\"Response body has required properties\", () => {\r",
-							"    pm.expect(response).to.have.all.keys('column_id', 'order', 'title', 'updated_at', 'created_at', 'id');\r",
+							"    pm.expect(response).to.have.all.keys('column_id', 'order', 'title', 'status', 'updated_at', 'created_at', 'id');\r",
 							"});\r",
 							"\r",
 							"// Test for data types of properties\r",
@@ -510,8 +455,11 @@
 							"    pm.expect(response.order).to.be.a('number');\r",
 							"    pm.expect(response.title).to.be.a('string');\r",
 							"    pm.expect(response.updated_at).to.be.a('string');\r",
+							"    pm.expect(response.status).to.be.a('string');\r",
 							"    pm.expect(response.created_at).to.be.a('string');\r",
 							"    pm.expect(response.id).to.be.a('number');\r",
+							"\r",
+							"    pm.expect(response.status).to.equal('not_started');\r",
 							"\r",
 							"    const created_at = new Date(response.created_at);\r",
 							"    pm.expect(!isNaN(created_at.getTime())).to.be.true;\r",
@@ -896,6 +844,61 @@
 						"v1",
 						"cards",
 						"{{card_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 200) {\r",
+							"    pm.environment.set(\"auth_token\", \"\");\r",
+							"}\r",
+							"\r",
+							"pm.test('Response message is valid', () => {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.message).to.exist;\r",
+							"    pm.expect(response.message).to.be.a('string');\r",
+							"    pm.expect(response.message).to.equal('Logged out');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{auth_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/logout",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"logout"
 					]
 				}
 			},

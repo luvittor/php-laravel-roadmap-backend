@@ -9,11 +9,14 @@ class CardService
 {
     public function create(array $data): Card
     {
-        return Card::create([
+        $card = Card::create([
             'column_id' => $data['column_id'],
             'order'     => $data['order'],
             'title'     => $data['title'] ?? '',
         ]);
+
+        // Refresh to ensure all database defaults are loaded
+        return $card->fresh();
     }
 
     public function updateTitle(Card $card, string $title): Card
