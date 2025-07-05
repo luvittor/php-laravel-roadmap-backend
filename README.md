@@ -81,6 +81,11 @@ docker exec -it php-laravel-roadmap-backend php artisan test
 php artisan test
 ```
 
+If you see a `Call to undefined function pcntl_fork()` error, install the
+`pcntl` extension. On Ubuntu/Debian this is provided by the `php8.2-cli` package
+(e.g. `sudo apt-get install php8.2-cli`). On macOS, `brew install php` will also
+include `pcntl`.
+
 ## API Usage
 
 To receive JSON validation errors when calling the API, include the header:
