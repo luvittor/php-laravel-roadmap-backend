@@ -53,6 +53,7 @@
 						"exec": [
 							"if (pm.response.code === 201) {\r",
 							"    pm.environment.set(\"auth_token\", pm.response.json().token);\r",
+							"    pm.environment.set(\"user_email\", pm.response.json().user.email);\r",
 							"}\r",
 							"\r",
 							"// Parse the response JSON\r",
@@ -77,7 +78,31 @@
 							"pm.test(\"Token matches expected format\", () => {\r",
 							"    pm.expect(response.token).to.match(/^\\d+\\|sanctum_[A-Za-z0-9]+$/);\r",
 							"});\r",
-							""
+							"\r",
+							"// Test for user existence\r",
+							"pm.test(\"User exists in response\", () => {\r",
+							"    pm.expect(response.user).to.exist;\r",
+							"});\r",
+							"\r",
+							"// Test for user expected fields id and email\r",
+							"pm.test(\"User has expected fields\", () => {\r",
+							"    pm.expect(response.user).to.have.all.keys('id', 'email');\r",
+							"});\r",
+							"\r",
+							"// Test for user id\r",
+							"pm.test(\"User id is a number\", () => {\r",
+							"    pm.expect(response.user.id).to.be.a('number');\r",
+							"});\r",
+							"\r",
+							"// Test for user email\r",
+							"pm.test(\"User email is a string\", () => {\r",
+							"    pm.expect(response.user.email).to.be.a('string');\r",
+							"});\r",
+							"\r",
+							"// Test for user email format\r",
+							"pm.test(\"User email matches expected format\", () => {\r",
+							"    pm.expect(response.user.email).to.match(/^\\S+@\\S+\\.\\S+$/);\r",
+							"});"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -103,7 +128,7 @@
 						},
 						{
 							"key": "email",
-							"value": "test@test",
+							"value": "test{{$randomInt}}@test.com",
 							"type": "text"
 						},
 						{
@@ -160,7 +185,30 @@
 							"    pm.expect(response.token).to.match(/^\\d+\\|sanctum_[A-Za-z0-9]+$/);\r",
 							"});\r",
 							"\r",
-							""
+							"// Test for user existence\r",
+							"pm.test(\"User exists in response\", () => {\r",
+							"    pm.expect(response.user).to.exist;\r",
+							"});\r",
+							"\r",
+							"// Test for user expected fields id and email\r",
+							"pm.test(\"User has expected fields\", () => {\r",
+							"    pm.expect(response.user).to.have.all.keys('id', 'email');\r",
+							"});\r",
+							"\r",
+							"// Test for user id\r",
+							"pm.test(\"User id is a number\", () => {\r",
+							"    pm.expect(response.user.id).to.be.a('number');\r",
+							"});\r",
+							"\r",
+							"// Test for user email\r",
+							"pm.test(\"User email is a string\", () => {\r",
+							"    pm.expect(response.user.email).to.be.a('string');\r",
+							"});\r",
+							"\r",
+							"// Test for user email format\r",
+							"pm.test(\"User email matches expected format\", () => {\r",
+							"    pm.expect(response.user.email).to.match(/^\\S+@\\S+\\.\\S+$/);\r",
+							"});"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -181,7 +229,7 @@
 					"formdata": [
 						{
 							"key": "email",
-							"value": "test@test",
+							"value": "{{user_email}}",
 							"type": "text"
 						},
 						{
