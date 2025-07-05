@@ -42,7 +42,6 @@ class CardApiTest extends TestCase
 
         // assert the response
         $res->assertOk();
-        $res->assertJsonCount(2);
 
         // check the response structure
         $res->assertJsonStructure([
@@ -61,6 +60,9 @@ class CardApiTest extends TestCase
                 ],
             ],
         ]);
+
+        // check the number of cards returned
+        $res->assertJsonCount(3, 'cards');
 
         // check the cards are returned in the correct order, titles and ids
         $res->assertJsonPath('cards.0.id', $cardB->id);
