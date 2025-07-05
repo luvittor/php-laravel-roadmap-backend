@@ -2,10 +2,8 @@
 
 namespace Tests;
 
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Tests\CreatesApplication;
-
 use App\Models\User;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -20,6 +18,7 @@ abstract class TestCase extends BaseTestCase
     protected function authHeaders(User $user): array
     {
         $token = $user->createToken('api')->plainTextToken;
-        return ['Authorization' => 'Bearer ' . $token];
+
+        return ['Authorization' => 'Bearer '.$token];
     }
 }

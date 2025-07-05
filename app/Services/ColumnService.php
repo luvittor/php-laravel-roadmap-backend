@@ -10,16 +10,16 @@ class ColumnService
     {
         try {
             return Column::firstOrCreate([
-                'year'    => $year,
-                'month'   => $month,
+                'year' => $year,
+                'month' => $month,
                 'user_id' => $userId,
             ]);
         } catch (\Illuminate\Database\QueryException $e) {
             // Handle unique constraint violation by retrying the find
             if ($e->getCode() === '23000') {
                 return Column::where([
-                    'year'    => $year,
-                    'month'   => $month,
+                    'year' => $year,
+                    'month' => $month,
                     'user_id' => $userId,
                 ])->first();
             }

@@ -27,9 +27,9 @@ class Card extends Model
     ];
 
     protected $casts = [
-        'id'        => 'integer',
+        'id' => 'integer',
         'column_id' => 'integer',
-        'order'     => 'integer',
+        'order' => 'integer',
     ];
 
     /**

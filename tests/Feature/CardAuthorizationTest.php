@@ -5,8 +5,8 @@ namespace Tests\Feature;
 use App\Models\Card;
 use App\Models\Column;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Auth\Middleware\Authorize;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class CardAuthorizationTest extends TestCase
@@ -35,7 +35,7 @@ class CardAuthorizationTest extends TestCase
         );
         $res->assertForbidden();
     }
-    
+
     public function test_route_blocks_viewing_foreign_card(): void
     {
         [, $card, , $other] = $this->setUpCard();
@@ -106,7 +106,6 @@ class CardAuthorizationTest extends TestCase
         $res->assertForbidden();
     }
 
-
     public function test_controller_blocks_viewing_foreign_card(): void
     {
         [, $card, , $other] = $this->setUpCard();
@@ -168,4 +167,3 @@ class CardAuthorizationTest extends TestCase
         $res->assertForbidden();
     }
 }
-

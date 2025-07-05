@@ -2,26 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PositionRequest;
 use App\Models\Card;
 use App\Services\CardService;
 use App\Services\ColumnService;
-use App\Http\Requests\PositionRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class CardController extends Controller
 {
-    public function __construct(private CardService $cards, private ColumnService $columns)
-    {
-    }
+    public function __construct(private CardService $cards, private ColumnService $columns) {}
 
     public function store(Request $request): JsonResponse
     {
         $data = $request->validate([
             'column_id' => 'required|exists:columns,id',
-            'order'     => 'required|integer|min:1',
-            'title'     => 'nullable|string',
+            'order' => 'required|integer|min:1',
+            'title' => 'nullable|string',
         ]);
 
         $column = $this->columns->find($data['column_id']);
@@ -31,7 +29,7 @@ class CardController extends Controller
 
         return response()
             ->json($card, Response::HTTP_CREATED)
-            ->header('Location', '/api/v1/cards/' . $card->id);
+            ->header('Location', '/api/v1/cards/'.$card->id);
     }
 
     public function show(Card $card): JsonResponse

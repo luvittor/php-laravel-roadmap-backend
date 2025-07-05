@@ -14,8 +14,8 @@ class AuthApiTest extends TestCase
     public function test_register_returns_token_and_creates_user(): void
     {
         $email = 'john@example.com';
-        
-        $response = $this->postJson('/api/v1/register',[
+
+        $response = $this->postJson('/api/v1/register', [
             'name' => 'John Doe',
             'email' => $email,
             'password' => 'secret123',

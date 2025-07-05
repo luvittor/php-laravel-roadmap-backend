@@ -12,7 +12,6 @@ class CardApiSadPathTest extends TestCase
 {
     use RefreshDatabase;
 
-
     public function test_fetch_cards_requires_authentication(): void
     {
         $this->getJson('/api/v1/columns/2025/6/cards')

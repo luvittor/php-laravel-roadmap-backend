@@ -11,8 +11,8 @@ class CardService
     {
         $card = Card::create([
             'column_id' => $data['column_id'],
-            'order'     => $data['order'],
-            'title'     => $data['title'] ?? '',
+            'order' => $data['order'],
+            'title' => $data['title'] ?? '',
         ]);
 
         // Refresh to ensure all database defaults are loaded
@@ -22,12 +22,14 @@ class CardService
     public function updateTitle(Card $card, string $title): Card
     {
         $card->update(['title' => $title]);
+
         return $card;
     }
 
     public function updateStatus(Card $card, string $status): Card
     {
         $card->update(['status' => $status]);
+
         return $card;
     }
 
@@ -35,7 +37,7 @@ class CardService
     {
         $card->update([
             'column_id' => $column->id,
-            'order'     => $order,
+            'order' => $order,
         ]);
 
         // Reload the column relationship

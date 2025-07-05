@@ -27,7 +27,7 @@ class ColumnFactory extends Factory
         self::$sequence++;
 
         return [
-            'year'  => $year,
+            'year' => $year,
             'month' => $month,
         ];
     }

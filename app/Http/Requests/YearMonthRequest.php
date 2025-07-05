@@ -14,7 +14,7 @@ class YearMonthRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'year'  => 'required|integer|min:2000|max:4000',
+            'year' => 'required|integer|min:2000|max:4000',
             'month' => 'required|integer|min:1|max:12',
         ];
     }
