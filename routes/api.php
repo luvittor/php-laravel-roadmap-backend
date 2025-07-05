@@ -19,7 +19,8 @@ Route::prefix('v1')->group(function () {
         Route::post('/cards', [\App\Http\Controllers\CardController::class, 'store']);
 
         Route::get('/cards/{card}', [\App\Http\Controllers\CardController::class, 'show'])
-            ->middleware('can:view,card');
+            ->middleware('can:view,card')
+            ->name('cards.show');
         Route::patch('/cards/{card}/title', [\App\Http\Controllers\CardController::class, 'updateTitle'])
             ->middleware('can:update,card');
         Route::patch('/cards/{card}/status', [\App\Http\Controllers\CardController::class, 'updateStatus'])

@@ -29,7 +29,7 @@ class CardController extends Controller
 
         return response()
             ->json($card, Response::HTTP_CREATED)
-            ->header('Location', '/api/v1/cards/'.$card->id);
+            ->header('Location', route('cards.show', $card));
     }
 
     public function show(Card $card): JsonResponse
