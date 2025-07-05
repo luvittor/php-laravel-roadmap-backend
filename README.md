@@ -117,3 +117,7 @@ All of our Postman artifacts live in `docs/postman/`.
 | `PATCH`  | `/cards/{id}/position`          | Move card to another column/order |
 | `DELETE` | `/cards/{id}`                   | Delete a card                     |
 
+
+### Database Notes
+
+For information on transaction isolation and how duplicate columns are handled see [docs/database.md](docs/database.md).
