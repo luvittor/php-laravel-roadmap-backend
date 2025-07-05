@@ -6,6 +6,7 @@ use App\Models\Card;
 use App\Services\CardService;
 use App\Services\ColumnService;
 use App\Http\Requests\PositionRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -15,7 +16,7 @@ class CardController extends Controller
     {
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $data = $request->validate([
             'column_id' => 'required|exists:columns,id',
@@ -33,14 +34,14 @@ class CardController extends Controller
             ->header('Location', '/api/v1/cards/' . $card->id);
     }
 
-    public function show(Card $card)
+    public function show(Card $card): JsonResponse
     {
         $this->authorize('view', $card);
 
         return response()->json($card);
     }
 
-    public function updateTitle(Request $request, Card $card)
+    public function updateTitle(Request $request, Card $card): JsonResponse
     {
         $this->authorize('update', $card);
 
@@ -53,7 +54,7 @@ class CardController extends Controller
         return response()->json($card);
     }
 
-    public function updateStatus(Request $request, Card $card)
+    public function updateStatus(Request $request, Card $card): JsonResponse
     {
         $this->authorize('update', $card);
 
@@ -66,7 +67,7 @@ class CardController extends Controller
         return response()->json($card);
     }
 
-    public function updatePosition(PositionRequest $request, Card $card)
+    public function updatePosition(PositionRequest $request, Card $card): JsonResponse
     {
         $this->authorize('update', $card);
 
@@ -79,7 +80,7 @@ class CardController extends Controller
         return response()->json($card);
     }
 
-    public function destroy(Card $card)
+    public function destroy(Card $card): Response
     {
         $this->authorize('delete', $card);
 
