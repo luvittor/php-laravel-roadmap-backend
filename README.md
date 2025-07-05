@@ -81,6 +81,14 @@ docker exec -it php-laravel-roadmap-backend php artisan test
 php artisan test
 ```
 
+### Linting
+
+Run Laravel Pint to ensure code style matches the project standard:
+
+```bash
+composer lint
+```
+
 ## API Usage
 
 To receive JSON validation errors when calling the API, include the header:
