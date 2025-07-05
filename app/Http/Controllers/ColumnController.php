@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\ColumnService;
 use App\Http\Requests\YearMonthRequest;
+use Illuminate\Http\JsonResponse;
 
 class ColumnController extends Controller
 {
@@ -11,7 +12,7 @@ class ColumnController extends Controller
     {
     }
 
-    public function cards(YearMonthRequest $request)
+    public function cards(YearMonthRequest $request): JsonResponse
     {
         $data = $request->validated();
         $column = $this->columns->firstOrCreate($data['year'], $data['month'], $request->user()->id);
