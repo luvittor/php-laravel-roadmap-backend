@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,7 +13,7 @@ class AuthController extends Controller
     /**
      * Register a new user and return token.
      */
-    public function register(Request $request)
+    public function register(Request $request): JsonResponse
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
@@ -28,13 +29,20 @@ class AuthController extends Controller
 
         $token = $user->createToken('api')->plainTextToken;
 
-        return response()->json(['token' => $token], Response::HTTP_CREATED);
+        $user->fresh();
+
+        $data = [
+            'token' => $token,
+            'user' => $user->only(['id', 'email']),
+        ];
+
+        return response()->json($data, Response::HTTP_CREATED);
     }
 
     /**
      * Authenticate user and return token.
      */
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
         $data = $request->validate([
             'email' => 'required|email',
@@ -49,13 +57,20 @@ class AuthController extends Controller
 
         $token = $user->createToken('api')->plainTextToken;
 
-        return response()->json(['token' => $token]);
+        $user->fresh();
+
+        $data = [
+            'token' => $token,
+            'user' => $user->only(['id', 'email']),
+        ];
+
+        return response()->json($data);
     }
 
     /**
      * Revoke current token.
      */
-    public function logout(Request $request)
+    public function logout(Request $request): JsonResponse
     {
         $request->user()->currentAccessToken()->delete();
 
@@ -65,7 +80,7 @@ class AuthController extends Controller
     /**
      * Return authenticated user profile.
      */
-    public function user(Request $request)
+    public function user(Request $request): JsonResponse
     {
         return response()->json($request->user());
     }
@@ -73,7 +88,7 @@ class AuthController extends Controller
     /**
      * Return authenticated pong message.
      */
-    public function pingAuth()
+    public function pingAuth(): JsonResponse
     {
         return response()->json(['message' => 'authenticated pong']);
     }

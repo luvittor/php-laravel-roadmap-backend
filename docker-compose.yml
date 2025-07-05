@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   app:
     build:
@@ -15,7 +13,20 @@ services:
       DB_HOST: host.docker.internal
 
     working_dir: /var/www/html
-    # This service still runs php-fpm by default (no override). 
+
+    # ─────────────────────────────────────────────────────────────
+    # on first start (no vendor/), bootstrap Laravel, then run php-fpm
+    command: >
+      sh -c "
+        if [ ! -d vendor ]; then
+          composer install --no-interaction --prefer-dist --optimize-autoloader &&
+          php artisan key:generate &&
+          php artisan migrate --force
+        fi &&
+        php-fpm
+      "
+    # ─────────────────────────────────────────────────────────────
+
     expose:
       - "9000"
 

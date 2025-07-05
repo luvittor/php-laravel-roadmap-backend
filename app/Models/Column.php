@@ -23,6 +23,12 @@ class Column extends Model
         'user_id',
     ];
 
+    protected $casts = [
+        'year' => 'integer',
+        'month' => 'integer',
+        'user_id' => 'integer',
+    ];
+
     /**
      * Get the user that owns the column.
      */
