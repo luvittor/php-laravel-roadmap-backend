@@ -69,22 +69,25 @@ After setting up the application, you can run the tests to ensure everything is 
 
 Our PHPUnit suite uses an in‑memory SQLite database defined in `phpunit.xml`, so you do not need a separate database.
 
+One parallel test requires the `pcntl` extension to run. This test is skipped if `pcntl` is not available.
+
 #### Docker
 
 ```bash
+# Run tests
 docker exec -it php-laravel-roadmap-backend php artisan test
+# Run tests in parallel with random order
+docker exec -it php-laravel-roadmap-backend php artisan test --parallel --processes=4 --order-by=random
 ```
 
 #### Host Machine
 
 ```bash
+# Run tests
 php artisan test
+# Run tests in parallel with random order
+php artisan test --parallel --processes=4 --order-by=random
 ```
-
-If you see a `Call to undefined function pcntl_fork()` error, install the
-`pcntl` extension. On Ubuntu/Debian this is provided by the `php8.2-cli` package
-(e.g. `sudo apt-get install php8.2-cli`). On macOS, `brew install php` will also
-include `pcntl`.
 
 ### Linting
 
