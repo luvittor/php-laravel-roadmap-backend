@@ -61,7 +61,7 @@ php artisan migrate
 php artisan serve
 ```
 
-- Open your browser at: http://localhost:8000/ping
+- Open your browser at: <http://localhost:8000/ping>
 
 ### Running Tests
 
@@ -69,7 +69,7 @@ After setting up the application, you can run the tests to ensure everything is 
 
 Our PHPUnit suite uses an in‑memory SQLite database defined in `phpunit.xml`, so you do not need a separate database.
 
-One testunit emulates a parallel request to one endpoint and requires the `pcntl` extension to run. This test is skipped if `pcntl` is not available.
+One test unit emulates a parallel request to one endpoint and requires the `pcntl` extension to run. This test is skipped if `pcntl` is not available.
 
 #### Docker
 
