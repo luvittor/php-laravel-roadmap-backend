@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\Column;
-use Illuminate\Database\Exceptions\UniqueConstraintViolationException;
+use Illuminate\Database\UniqueConstraintViolationException;
 
 class ColumnService
 {
@@ -17,6 +17,7 @@ class ColumnService
             ]);
         } catch (UniqueConstraintViolationException $e) {
             // Retry the find when a unique constraint is violated
+            // This is a workaround for concurrent requests that might cause a unique constraint violation
             return Column::where([
                 'year' => $year,
                 'month' => $month,
