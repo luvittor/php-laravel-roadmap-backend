@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\ColumnService;
 use App\Http\Requests\YearMonthRequest;
+use App\Services\ColumnService;
 use Illuminate\Http\JsonResponse;
 
 class ColumnController extends Controller
 {
-    public function __construct(private ColumnService $columns)
-    {
-    }
+    public function __construct(private ColumnService $columns) {}
 
     public function cards(YearMonthRequest $request): JsonResponse
     {

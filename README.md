@@ -27,7 +27,7 @@ php artisan cache:clear
 
 ### Running the Application
 
-By default, we provide a Docker‐based setup (Nginx + PHP-FPM) to mirror production as closely as possible. However, on Windows/WSL this configuration can be noticeably slower due to file-system performance.
+By default, we provide a Docker‐based setup (Nginx + PHP-FPM) to mirror production as closely as possible. However, on Windows/WSL, this configuration can be noticeably slower due to file-system performance.
 
 Alternatively, you can run the application directly on your host machine using **Laravel's built-in server**, which is **faster** but less production-like.
 
@@ -38,19 +38,19 @@ Alternatively, you can run the application directly on your host machine using *
 - From the project root, build and launch the containers:
 
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
 
 - Wait a while for the composer dependencies to install.
   - This may take a few minutes on the first run.
-  - If it fails, remove the `vendor` directory and before trying again.
+  - If it fails, remove the `vendor` directory before trying again.
 - When you see this: `NOTICE: ready to handle connections` the application is ready.
-- Open your browser at: http://localhost:8080/ping
+- Open your browser at: <http://localhost:8080/ping>
 
 #### Host Machine
 
- - Make sure you copied the `.env.example` to `.env` and configured it properly.
- - Make sure you have PHP (>= 8.2) and Composer installed on your host machine.
+- Make sure you copied the `.env.example` to `.env` and configured it properly.
+- Make sure you have PHP (>= 8.2) and Composer installed on your host machine.
 
 ```bash
 composer install
@@ -86,6 +86,17 @@ If you see a `Call to undefined function pcntl_fork()` error, install the
 (e.g. `sudo apt-get install php8.2-cli`). On macOS, `brew install php` will also
 include `pcntl`.
 
+### Linting
+
+Run Laravel Pint to ensure code style matches the project standard:
+
+```bash
+# Run Pint in test mode (no changes made)
+composer lint
+# Run Pint to fix code style issues
+composer lint:fix
+```
+
 ## API Usage
 
 To receive JSON validation errors when calling the API, include the header:
@@ -104,7 +115,7 @@ All of our Postman artifacts live in `docs/postman/`.
 
 - **Collection**  
   `docs/postman/php-laravel-roadmap.postman_collection.json`  
-  ↪ Contains all of the endpoints, example bodies, headers, etc.
+  ↪ Contains all the endpoints, example bodies, headers, tests, flows, etc.
 
 - **Environment**  
   `docs/postman/php-laravel-roadmap-localhost.postman_environment.json`
@@ -121,8 +132,3 @@ All of our Postman artifacts live in `docs/postman/`.
 | `PATCH`  | `/cards/{id}/status`            | Update only the card status       |
 | `PATCH`  | `/cards/{id}/position`          | Move card to another column/order |
 | `DELETE` | `/cards/{id}`                   | Delete a card                     |
-
-
-### Database Notes
-
-For information on transaction isolation and how duplicate columns are handled see [docs/database.md](docs/database.md).

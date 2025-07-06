@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
         // Create users
         $users_random = rand(5, 10);
         $newUsers = User::factory($users_random)->create();
-       
+
         // Create columns for each user without duplicating year/month pairs
         $years = range(now()->year - 1, now()->year + 1);
         $months = range(1, 12);

@@ -12,7 +12,6 @@ class CardApiTest extends TestCase
 {
     use RefreshDatabase;
 
-
     public function test_fetch_cards_returns_cards_for_column(): void
     {
         // create a user and a column for that user
@@ -22,19 +21,19 @@ class CardApiTest extends TestCase
         // create cards for the column
         $cardA = Card::factory()->for($column)->create([
             'order' => 1,
-            'title' => 'Card A'
+            'title' => 'Card A',
         ]);
 
         // order=1 again, this will shift the order of the cardA
         $cardB = Card::factory()->for($column)->create([
             'order' => 1,
-            'title' => 'Card B'
+            'title' => 'Card B',
         ]);
 
         // create a third card with order 3
         $cardC = Card::factory()->for($column)->create([
             'order' => 3,
-            'title' => 'Card C'
+            'title' => 'Card C',
         ]);
 
         // fetch cards for the column
@@ -52,7 +51,7 @@ class CardApiTest extends TestCase
                 'user_id',
             ],
             'cards' => [
-                '*' => [    
+                '*' => [
                     'id',
                     'title',
                     'order',
@@ -171,6 +170,4 @@ class CardApiTest extends TestCase
         $res->assertStatus(422);
         $res->assertJsonValidationErrors(['year', 'month']);
     }
-
-    
 }

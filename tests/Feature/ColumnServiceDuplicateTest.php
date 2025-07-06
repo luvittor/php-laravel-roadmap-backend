@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Services\ColumnService;
-use App\Models\User;
 use App\Models\Column;
+use App\Models\User;
+use App\Services\ColumnService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -14,7 +14,7 @@ class ColumnServiceDuplicateTest extends TestCase
 
     public function test_first_or_create_handles_duplicate_insertion(): void
     {
-        $service = new ColumnService();
+        $service = new ColumnService;
         $user = User::factory()->create();
 
         $first = $service->firstOrCreate(2025, 7, $user->id);

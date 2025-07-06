@@ -39,7 +39,7 @@ return [
     | Origin(s) permitted to make requests.
     |--------------------------------------------------------------------------
     */
-    'allowed_origins' =>  explode(',', env('CORS_ALLOWED_ORIGINS', '')),
+    'allowed_origins' => explode(',', env('CORS_ALLOWED_ORIGINS', '')),
 
     /*
     |--------------------------------------------------------------------------
