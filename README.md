@@ -16,7 +16,7 @@ Now review all .env variables and set them according to your environment.
 
 #### CORS_ALLOWED_ORIGINS
 
-Set CORS_ALLOWED_ORIGINS with your frontend URLs separated by commas, e.g. `https://www.example.com,https://example.com` or `*` to allow all origins (recommended only for development).
+Set CORS_ALLOWED_ORIGINS with your frontend URLs separated by commas, e.g. `https://www.example.com,https://example.com` or `*` to allow all origins (recommended only for development, **NOT production**).
 
 Note: If you change CORS_ALLOWED_ORIGINS after initial setup, you may need to clear the configuration cache to apply the changes:
 
