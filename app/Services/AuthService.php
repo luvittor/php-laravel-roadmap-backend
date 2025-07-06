@@ -35,8 +35,6 @@ class AuthService
 
         $token = $user->createToken('api')->plainTextToken;
 
-        $user->fresh();
-
         return [
             'token' => $token,
             'user' => $user->only(['id', 'email']),
