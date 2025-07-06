@@ -30,28 +30,32 @@ class ColumnServiceParallelTest extends TestCase
         DB::purge('sqlite');
         $this->artisan('migrate');
 
-        $service = new ColumnService();
-        $user = User::factory()->create();
+        try {
+            $service = new ColumnService();
+            $user = User::factory()->create();
 
-        $pids = [];
-        for ($i = 0; $i < 2; $i++) {
-            $pid = pcntl_fork();
-            if ($pid === 0) {
-                // Child process: reconnect and run the service call
-                DB::reconnect('sqlite');
-                $service->firstOrCreate(2025, 7, $user->id);
-                exit(0);
+            $pids = [];
+            for ($i = 0; $i < 2; $i++) {
+                $pid = pcntl_fork();
+                if ($pid === 0) {
+                    // Child process: reconnect and run the service call
+                    DB::reconnect('sqlite');
+                    $service->firstOrCreate(2025, 7, $user->id);
+                    exit(0);
+                }
+                $pids[] = $pid;
             }
-            $pids[] = $pid;
+
+            // Wait for children
+            foreach ($pids as $pid) {
+                pcntl_waitpid($pid, $status);
+            }
+
+            $this->assertEquals(1, Column::count());
+        } finally {
+            Config::set('database.connections.sqlite.database', ':memory:');
+            DB::purge('sqlite');
+            @unlink($dbPath);
         }
-
-        // Wait for children
-        foreach ($pids as $pid) {
-            pcntl_waitpid($pid, $status);
-        }
-
-        $this->assertEquals(1, Column::count());
-
-        @unlink($dbPath);
     }
 }
