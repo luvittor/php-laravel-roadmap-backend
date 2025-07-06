@@ -91,7 +91,7 @@ php artisan test --parallel --processes=4 --order-by=random
 
 ### Linting
 
-Run Laravel Pint to ensure code style matches the project standard:
+Run Laravel Pint to ensure the code style matches the project standard:
 
 ```bash
 # Run Pint in test mode (no changes made)
@@ -128,7 +128,7 @@ All of our Postman artifacts live in `docs/postman/`.
 
 | Method   | Endpoint                        | Description                       |
 | -------- | ------------------------------- | --------------------------------- |
-| `GET`    | `/columns/{year}/{month}/cards` | List cards for a given column     |
+| `GET`    | `/columns/{year}/{month}/cards` | List cards for a given year/month |
 | `POST`   | `/cards`                        | Create a new card                 |
 | `GET`    | `/cards/{id}`                   | Retrieve a card                   |
 | `PATCH`  | `/cards/{id}/title`             | Update only the card title        |
