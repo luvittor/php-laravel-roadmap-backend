@@ -38,7 +38,10 @@ Alternatively, you can run the application directly on your host machine using *
 - From the project root, build and launch the containers:
 
 ```bash
+# first run
 docker compose up --build
+# subsequent runs
+docker compose up -d
 ```
 
 - Wait a while for the composer dependencies to install.
