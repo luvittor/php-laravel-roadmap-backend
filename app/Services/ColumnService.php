@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Column;
+use Illuminate\Database\Exceptions\UniqueConstraintViolationException;
 
 class ColumnService
 {
@@ -14,16 +15,13 @@ class ColumnService
                 'month' => $month,
                 'user_id' => $userId,
             ]);
-        } catch (\Illuminate\Database\QueryException $e) {
-            // Handle unique constraint violation by retrying the find
-            if ($e->getCode() === '23000') {
-                return Column::where([
-                    'year' => $year,
-                    'month' => $month,
-                    'user_id' => $userId,
-                ])->first();
-            }
-            throw $e;
+        } catch (UniqueConstraintViolationException $e) {
+            // Retry the find when a unique constraint is violated
+            return Column::where([
+                'year' => $year,
+                'month' => $month,
+                'user_id' => $userId,
+            ])->first();
         }
     }
 
