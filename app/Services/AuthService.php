@@ -25,7 +25,7 @@ class AuthService
         ];
     }
 
-    public function login(array $data): array|null
+    public function login(array $data): ?array
     {
         $user = User::where('email', $data['email'])->first();
 
