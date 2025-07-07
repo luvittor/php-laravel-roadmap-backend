@@ -39,16 +39,17 @@ Alternatively, you can run the application directly on your host machine using *
 
 ```bash
 # first run
-docker compose up --build
+docker compose up --build -d
+# to check if both services are running and healthy
+docker ps
 # subsequent runs
 docker compose up -d
 ```
 
-- Wait a while for the composer dependencies to install.
+- Wait a while for the composer dependencies to install and the application to be ready.
   - This may take a few minutes on the first run.
   - If it fails, remove the `vendor` directory before trying again.
-- When you see this: `NOTICE: ready to handle connections` the application is ready.
-- Open your browser at: <http://localhost:8000/ping>
+- When services are running and healthy you can open your browser at: <http://localhost:8000/ping>
 
 #### Host Machine
 
