@@ -19,7 +19,7 @@ services:
     # ─────────────────────────────────────────────────────────────
     # on first start (no vendor/), bootstrap Laravel, then run php-fpm
     command: >
-      sh -c "
+      sh -ce "
         if [ ! -d vendor ]; then
           composer install --no-interaction --prefer-dist --optimize-autoloader &&
           php artisan key:generate &&
