@@ -7,13 +7,35 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
+      # 1) Checkout
       - name: Checkout code
         uses: actions/checkout@v4
+
+      # 2) Setup PHP & Composer
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
+          tools: composer
+
+      # 3) Grab Composer's cache dir
+      - name: Get Composer cache dir
+        id: composer-cache
+        uses: ./.github/actions/composer-cache
+
+      # 4) Cache Composer downloads
+      - name: Cache Composer downloads
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      # 5) Install ALL deps (you need dev deps for Pint)
       - name: Install Composer dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
+
+      # 6) Run Pint
       - name: Run Pint for code style
         run: composer lint
