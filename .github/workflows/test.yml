@@ -7,20 +7,46 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      # 1) Checkout your code
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Setup PHP
+
+      # 2) Set up PHP (with pcntl) & Composer
+      - name: Setup PHP & Composer
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
           extensions: pcntl
+          tools: composer
+
+      # 3) Locate Composer's cache directory
+      - name: Get Composer cache dir
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      # 4) Cache those download artifacts
+      - name: Cache Composer downloads
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      # 5) Install all dependencies (including dev)
       - name: Install Composer dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
+
+      # 6) Prepare environment
       - name: Copy .env.example to .env
         run: cp .env.example .env
       - name: Generate application key
         run: php artisan key:generate
-      - name: Run tests
+
+      # 7) Run your test suite
+      - name: Run PHPUnit tests
         run: php artisan test
+
+      # 8) Parallel tests in random order
       - name: Run parallel tests randomly
         run: php artisan test --parallel --processes=4 --order-by=random
