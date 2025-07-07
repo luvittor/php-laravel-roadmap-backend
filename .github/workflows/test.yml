@@ -1,0 +1,26 @@
+name: Test Laravel Application
+
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pcntl
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+      - name: Copy .env.example to .env
+        run: cp .env.example .env
+      - name: Generate application key
+        run: php artisan key:generate
+      - name: Run tests
+        run: php artisan test
+      - name: Run parallel tests randomly
+        run: php artisan test --parallel --processes=4 --order-by=random

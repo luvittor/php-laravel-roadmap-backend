@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -10,11 +9,26 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ColumnFactory extends Factory
 {
+    /**
+     * Counter used to generate unique month/year combinations.
+     */
+    protected static int $sequence = 0;
+
+    public static function resetSequence(): void
+    {
+        self::$sequence = 0;
+    }
+
     public function definition(): array
     {
+        $year = now()->year + intdiv(self::$sequence, 12);
+        $month = (self::$sequence % 12) + 1;
+
+        self::$sequence++;
+
         return [
-            'year' => fake()->numberBetween(now()->year - 1, now()->year + 1),
-            'month' => fake()->numberBetween(1, 12),
+            'year' => $year,
+            'month' => $month,
         ];
     }
 }

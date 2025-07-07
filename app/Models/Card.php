@@ -26,6 +26,12 @@ class Card extends Model
         'status',
     ];
 
+    protected $casts = [
+        'id' => 'integer',
+        'column_id' => 'integer',
+        'order' => 'integer',
+    ];
+
     /**
      * Get the column that owns the card.
      */

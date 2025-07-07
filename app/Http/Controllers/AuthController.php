@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Services\AuthService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
+    public function __construct(private AuthService $auth) {}
+
     /**
      * Register a new user and return token.
      */
-    public function register(Request $request)
+    public function register(Request $request): JsonResponse
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
@@ -20,44 +22,36 @@ class AuthController extends Controller
             'password' => 'required|string|min:8',
         ]);
 
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        $result = $this->auth->register($data);
 
-        $token = $user->createToken('api')->plainTextToken;
-
-        return response()->json(['token' => $token], Response::HTTP_CREATED);
+        return response()->json($result, Response::HTTP_CREATED);
     }
 
     /**
      * Authenticate user and return token.
      */
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
         $data = $request->validate([
             'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
-        $user = User::where('email', $data['email'])->first();
+        $result = $this->auth->login($data);
 
-        if (! $user || ! Hash::check($data['password'], $user->password)) {
+        if ($result === null) {
             return response()->json(['message' => 'Invalid credentials'], Response::HTTP_UNAUTHORIZED);
         }
 
-        $token = $user->createToken('api')->plainTextToken;
-
-        return response()->json(['token' => $token]);
+        return response()->json($result);
     }
 
     /**
      * Revoke current token.
      */
-    public function logout(Request $request)
+    public function logout(Request $request): JsonResponse
     {
-        $request->user()->currentAccessToken()->delete();
+        $this->auth->logout($request->user());
 
         return response()->json(['message' => 'Logged out']);
     }
@@ -65,7 +59,7 @@ class AuthController extends Controller
     /**
      * Return authenticated user profile.
      */
-    public function user(Request $request)
+    public function user(Request $request): JsonResponse
     {
         return response()->json($request->user());
     }
@@ -73,7 +67,7 @@ class AuthController extends Controller
     /**
      * Return authenticated pong message.
      */
-    public function pingAuth()
+    public function pingAuth(): JsonResponse
     {
         return response()->json(['message' => 'authenticated pong']);
     }

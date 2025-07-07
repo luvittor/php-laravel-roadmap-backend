@@ -99,7 +99,7 @@ class CardOrderTest extends TestCase
         // Move B → column 2 at position 2
         $cardB->update([
             'column_id' => $col2->id,
-            'order'     => 2,
+            'order' => 2,
         ]);
 
         // Refresh all
@@ -137,7 +137,7 @@ class CardOrderTest extends TestCase
         // Move A → column 2 without order (null)
         $cardA->update([
             'column_id' => $col2->id,
-            'order'     => null,
+            'order' => null,
         ]);
 
         // Refresh all

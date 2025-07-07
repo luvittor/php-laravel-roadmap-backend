@@ -13,15 +13,18 @@ class AuthApiTest extends TestCase
 
     public function test_register_returns_token_and_creates_user(): void
     {
-        $response = $this->postJson('/api/v1/register',[
+        $email = 'john@example.com';
+
+        $response = $this->postJson('/api/v1/register', [
             'name' => 'John Doe',
-            'email' => 'john@example.com',
+            'email' => $email,
             'password' => 'secret123',
         ]);
 
         $response->assertCreated();
-        $response->assertJsonStructure(['token']);
-        $this->assertDatabaseHas('users', ['email' => 'john@example.com']);
+        $response->assertJsonStructure(['token', 'user' => ['id', 'email']]);
+        $this->assertDatabaseHas('users', ['email' => $email]);
+        $this->assertEquals($email, $response->json('user.email'));
     }
 
     public function test_login_returns_token(): void
@@ -34,7 +37,21 @@ class AuthApiTest extends TestCase
         ]);
 
         $response->assertOk();
-        $response->assertJsonStructure(['token']);
+        $response->assertJsonStructure(['token', 'user' => ['id', 'email']]);
+        $this->assertEquals($user->email, $response->json('user.email'));
+    }
+
+    public function test_login_returns_error_for_invalid_credentials(): void
+    {
+        $user = User::factory()->create(['password' => Hash::make('secret123')]);
+
+        $response = $this->postJson('/api/v1/login', [
+            'email' => $user->email,
+            'password' => 'wrong-password',
+        ]);
+
+        $response->assertStatus(401);
+        $response->assertExactJson(['message' => 'Invalid credentials']);
     }
 
     public function test_register_validation_errors_are_returned_for_invalid_data(): void
