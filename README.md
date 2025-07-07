@@ -95,7 +95,18 @@ php artisan test --parallel --processes=4 --order-by=random
 
 ### Linting
 
-Run Laravel Pint to ensure the code style matches the project standard:
+Run Laravel Pint to ensure the code style matches the project standard.
+
+#### Docker
+
+```bash
+# Run Pint in test mode (no changes made)
+docker compose exec php-laravel-roadmap-backend composer lint
+# Run Pint to fix code style issues
+docker compose exec php-laravel-roadmap-backend composer lint:fix
+```
+
+#### Host Machine
 
 ```bash
 # Run Pint in test mode (no changes made)
