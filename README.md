@@ -16,7 +16,7 @@ Now review all .env variables and set them according to your environment.
 
 #### CORS_ALLOWED_ORIGINS
 
-Set CORS_ALLOWED_ORIGINS with your frontend URLs separated by commas, e.g. `https://www.example.com,https://example.com` or `*` to allow all origins (recommended only for development).
+Set CORS_ALLOWED_ORIGINS with your frontend URLs separated by commas, e.g. `https://www.example.com,https://example.com` or `*` to allow all origins (recommended only for development, **NOT production**).
 
 Note: If you change CORS_ALLOWED_ORIGINS after initial setup, you may need to clear the configuration cache to apply the changes:
 
@@ -38,14 +38,17 @@ Alternatively, you can run the application directly on your host machine using *
 - From the project root, build and launch the containers:
 
 ```bash
+# first run
 docker compose up --build
+# subsequent runs
+docker compose up -d
 ```
 
 - Wait a while for the composer dependencies to install.
   - This may take a few minutes on the first run.
   - If it fails, remove the `vendor` directory before trying again.
 - When you see this: `NOTICE: ready to handle connections` the application is ready.
-- Open your browser at: <http://localhost:8080/ping>
+- Open your browser at: <http://localhost:8000/ping>
 
 #### Host Machine
 
