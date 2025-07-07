@@ -48,7 +48,7 @@ docker compose up -d
   - This may take a few minutes on the first run.
   - If it fails, remove the `vendor` directory before trying again.
 - When you see this: `NOTICE: ready to handle connections` the application is ready.
-- Open your browser at: <http://localhost:8080/ping>
+- Open your browser at: <http://localhost:8000/ping>
 
 #### Host Machine
 
