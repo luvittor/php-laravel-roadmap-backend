@@ -25,7 +25,7 @@ jobs:
       # 3) Grab Composer's cache directory
       - name: Get Composer cache dir
         id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+        uses: ./.github/actions/composer-cache
 
       # 4) Cache Composer downloads between runs
       - name: Cache Composer downloads
