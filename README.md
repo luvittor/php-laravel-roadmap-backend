@@ -49,7 +49,7 @@ docker compose up -d
 - Wait a while for the composer dependencies to install and the application to be ready.
   - This may take a few minutes on the first run.
   - If it fails, remove the `vendor` directory before trying again.
-- When services are running and healthy you can open your browser at: <http://localhost:8000/ping>
+- When services are running and healthy, you can open your browser at: <http://localhost:8000/ping>
 
 #### Host Machine
 
@@ -79,9 +79,9 @@ One test unit emulates a parallel request to one endpoint and requires the `pcnt
 
 ```bash
 # Run tests
-docker exec -it php-laravel-roadmap-backend php artisan test
+docker compose exec php-laravel-roadmap-backend php artisan test
 # Run tests in parallel with random order
-docker exec -it php-laravel-roadmap-backend php artisan test --parallel --processes=4 --order-by=random
+docker compose exec php-laravel-roadmap-backend php artisan test --parallel --processes=4 --order-by=random
 ```
 
 #### Host Machine
