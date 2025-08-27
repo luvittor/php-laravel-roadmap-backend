@@ -1,5 +1,16 @@
 # Roadmap Backend
 
+## Features & Best Practices
+
+This project was developed with a strong emphasis on modern web development practices and a robust, maintainable architecture. For a detailed explanation of the technical decisions and implementation, please see the [DEVELOPMENT.md](DEVELOPMENT.md) file.
+
+Key highlights include:
+- Comprehensive unit testing with PHPUnit.
+- A full CI/CD pipeline using GitHub Actions for linting, testing, and deployment.
+- Secure API with Laravel Sanctum for token-based authentication.
+- Adherence to DRY principles with custom validation rules.
+- A containerized development environment with Docker.
+
 ## Development Environment
 
 ### Cloning and Defining .env file
