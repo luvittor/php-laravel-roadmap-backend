@@ -75,6 +75,8 @@ Our PHPUnit suite uses an in‑memory SQLite database defined in `phpunit.xml`, 
 
 One test unit emulates a parallel request to one endpoint and requires the `pcntl` extension to run. This test is skipped if `pcntl` is not available.
 
+Before running tests, ensure you have copied the `.env.example` to `.env`. It is not necessary to fill any environment variables for testing, as they are overridden by `phpunit.xml`.
+
 #### Docker
 
 ```bash
