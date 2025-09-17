@@ -13,7 +13,7 @@ This document outlines the key technical decisions, architecture, and best pract
 - __Test Data Factories__: Laravel's model factories are used to generate realistic test data, ensuring that unit tests are robust and meaningful.
 - __Parallel Testing__: A specific parallel test is implemented for the `firstOrCreate` endpoint for columns to handle potential race conditions.
 - __GitHub Actions (CI/CD)__: The repository is equipped with GitHub Actions for a full CI/CD pipeline:
-  - **Linting**: Code is automatically linted on every push.
+  - **Linting**: Lint check on every push.
   - **Testing**: Unit, parallel, and randomized tests are run on every push.
   - **Auditing**: Security audits are performed on every push and on a weekly schedule.
   - **Deployment**: The application is automatically deployed to production on pushes to the `main` branch.
