@@ -1,5 +1,11 @@
 # Roadmap Backend
 
+[![PHP](https://img.shields.io/badge/PHP-8.2-blue)](https://www.php.net/)
+[![Laravel](https://img.shields.io/badge/Laravel-12.0-red)](https://laravel.com/)
+[![Docker](https://img.shields.io/badge/Docker-28.0-blue)](https://www.docker.com/)
+[![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-CI/CD-blue)](https://github.com/luvittor/php-laravel-roadmap-backend/actions)
+[![deepwiki](https://img.shields.io/badge/deepwiki-article-blue)](https://deepwiki.com/luvittor/php-laravel-roadmap-backend)
+
 ## Features & Best Practices
 
 This project was developed with a strong emphasis on modern web development practices and a robust, maintainable architecture. For a detailed explanation of the technical decisions and implementation, please see the [DEVELOPMENT.md](DEVELOPMENT.md) file.
