@@ -48,6 +48,7 @@ class CardController extends Controller
         ]);
 
         $title = $data['title'] ?? '';
+        $title = is_string($title) ? $title : '';
 
         $card = $this->cards->updateTitle($card, $title);
 
