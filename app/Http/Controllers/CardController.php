@@ -39,6 +39,17 @@ class CardController extends Controller
         return response()->json($card);
     }
 
+    /**
+     * Update a card's title.
+     *
+     * Validates that the request contains a `title` field (must be present and at most 255 characters),
+     * normalizes a missing or non-string `title` to an empty string, updates the card's title, and returns
+     * the updated card as JSON.
+     *
+     * @param \Illuminate\Http\Request $request Request with a `title` field (present, max 255).
+     * @param \App\Models\Card $card The card to update.
+     * @return \Illuminate\Http\JsonResponse JSON response containing the updated Card.
+     */
     public function updateTitle(Request $request, Card $card): JsonResponse
     {
         $this->authorize('update', $card);
