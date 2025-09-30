@@ -5,6 +5,8 @@
 [![Docker](https://img.shields.io/badge/Docker-28.0-blue)](https://www.docker.com/)
 [![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-CI/CD-blue)](https://github.com/luvittor/php-laravel-roadmap-backend/actions)
 [![deepwiki](https://img.shields.io/badge/deepwiki-article-blue)](https://deepwiki.com/luvittor/php-laravel-roadmap-backend)
+![OpenAPI](https://img.shields.io/badge/OpenAPI-3.1.0-blue)
+[![Swagger](https://img.shields.io/badge/Swagger-OpenAPI-yellowgreen)](https://swagger.io/)
 
 ## Features & Best Practices
 

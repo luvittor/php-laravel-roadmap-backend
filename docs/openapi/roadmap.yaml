@@ -1,10 +1,10 @@
-openapi: 3.0.3
+openapi: 3.1.0
 info:
   title: Laravel Roadmap API
   version: 1.0.0
   description: |
     OpenAPI specification for the Laravel Roadmap backend.
-    All endpoints are prefixed with `/api/v1` unless otherwise noted.
+    All endpoints are prefixed with `/api/v1`.
 security:
   - SanctumToken: []
 paths:
