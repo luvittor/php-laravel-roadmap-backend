@@ -1,0 +1,510 @@
+openapi: 3.0.3
+info:
+  title: Laravel Roadmap API
+  version: 1.0.0
+  description: |
+    OpenAPI specification for the Laravel Roadmap backend.
+    All endpoints are prefixed with `/api/v1` unless otherwise noted.
+servers:
+  - url: http://localhost
+security:
+  - SanctumToken: []
+paths:
+  /api/v1/register:
+    post:
+      summary: Register a new user
+      description: Create a new user account and issue an API token.
+      tags: [Auth]
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthTokenResponse'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /api/v1/login:
+    post:
+      summary: Authenticate a user
+      description: Issue a Sanctum API token for an existing user.
+      tags: [Auth]
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthTokenResponse'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /api/v1/logout:
+    post:
+      summary: Revoke the current token
+      tags: [Auth]
+      responses:
+        '200':
+          description: Logout confirmation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+  /api/v1/user:
+    get:
+      summary: Retrieve the authenticated user profile
+      tags: [Auth]
+      responses:
+        '200':
+          description: Authenticated user profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+  /api/v1/ping-auth:
+    get:
+      summary: Authenticated ping endpoint
+      tags: [Auth]
+      responses:
+        '200':
+          description: Authenticated pong message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+  /api/v1/columns/{year}/{month}/cards:
+    get:
+      summary: List cards for a month
+      description: Retrieve a column (creating it if it does not yet exist) and list its cards ordered by position.
+      tags: [Columns, Cards]
+      parameters:
+        - $ref: '#/components/parameters/YearParam'
+        - $ref: '#/components/parameters/MonthParam'
+      responses:
+        '200':
+          description: Column with cards
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ColumnWithCardsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+  /api/v1/cards:
+    post:
+      summary: Create a card
+      tags: [Cards]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCardRequest'
+      responses:
+        '201':
+          description: Card created
+          headers:
+            Location:
+              description: URL to the newly created card resource
+              schema:
+                type: string
+                format: uri
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Card'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /api/v1/cards/{card}:
+    get:
+      summary: Retrieve a card
+      tags: [Cards]
+      parameters:
+        - $ref: '#/components/parameters/CardIdParam'
+      responses:
+        '200':
+          description: Card details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Card'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      summary: Delete a card
+      tags: [Cards]
+      parameters:
+        - $ref: '#/components/parameters/CardIdParam'
+      responses:
+        '204':
+          description: Card deleted
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /api/v1/cards/{card}/title:
+    patch:
+      summary: Update a card title
+      tags: [Cards]
+      parameters:
+        - $ref: '#/components/parameters/CardIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTitleRequest'
+      responses:
+        '200':
+          description: Updated card
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Card'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /api/v1/cards/{card}/status:
+    patch:
+      summary: Update a card status
+      tags: [Cards]
+      parameters:
+        - $ref: '#/components/parameters/CardIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateStatusRequest'
+      responses:
+        '200':
+          description: Updated card
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Card'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /api/v1/cards/{card}/position:
+    patch:
+      summary: Move a card to a different position or month
+      tags: [Cards]
+      parameters:
+        - $ref: '#/components/parameters/CardIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePositionRequest'
+      responses:
+        '200':
+          description: Updated card
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Card'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+components:
+  securitySchemes:
+    SanctumToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Sanctum
+  parameters:
+    YearParam:
+      name: year
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 2000
+        maximum: 4000
+      description: Target year for the column.
+    MonthParam:
+      name: month
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 12
+      description: Target month for the column.
+    CardIdParam:
+      name: card
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+      description: Identifier of the card.
+  schemas:
+    RegisterRequest:
+      type: object
+      required: [name, email, password]
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        email:
+          type: string
+          format: email
+          description: Must be unique among users.
+        password:
+          type: string
+          minLength: 8
+          format: password
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+    AuthTokenResponse:
+      type: object
+      required: [token, user]
+      properties:
+        token:
+          type: string
+          description: Bearer token to use in the Authorization header.
+        user:
+          $ref: '#/components/schemas/AuthUserSummary'
+    AuthUserSummary:
+      type: object
+      required: [id, email]
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+          format: email
+    MessageResponse:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+    UserProfile:
+      type: object
+      required: [id, name, email, created_at, updated_at]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        email_verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    Column:
+      type: object
+      required: [id, year, month, user_id]
+      properties:
+        id:
+          type: integer
+        year:
+          type: integer
+          minimum: 2000
+          maximum: 4000
+        month:
+          type: integer
+          minimum: 1
+          maximum: 12
+        user_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+          nullable: true
+    Card:
+      type: object
+      required: [id, column_id, order, title, status]
+      properties:
+        id:
+          type: integer
+        column_id:
+          type: integer
+        order:
+          type: integer
+          minimum: 1
+        title:
+          type: string
+        status:
+          type: string
+          enum: [not_started, in_progress, completed]
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+          nullable: true
+    ColumnWithCardsResponse:
+      type: object
+      required: [column, cards]
+      properties:
+        column:
+          $ref: '#/components/schemas/Column'
+        cards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Card'
+    CreateCardRequest:
+      type: object
+      required: [column_id, order]
+      properties:
+        column_id:
+          type: integer
+          description: Must reference an existing column.
+        order:
+          type: integer
+          minimum: 1
+        title:
+          type: string
+          nullable: true
+          description: Defaults to an empty string when omitted.
+    UpdateTitleRequest:
+      type: object
+      required: [title]
+      properties:
+        title:
+          type: string
+          minLength: 0
+          maxLength: 255
+    UpdateStatusRequest:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [not_started, in_progress, completed]
+    UpdatePositionRequest:
+      type: object
+      required: [year, month, order]
+      properties:
+        year:
+          type: integer
+          minimum: 2000
+          maximum: 4000
+        month:
+          type: integer
+          minimum: 1
+          maximum: 12
+        order:
+          type: integer
+          minimum: 1
+    ErrorMessage:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+    ValidationErrors:
+      type: object
+      additionalProperties:
+        type: array
+        items:
+          type: string
+    ValidationErrorResponse:
+      type: object
+      required: [message, errors]
+      properties:
+        message:
+          type: string
+        errors:
+          $ref: '#/components/schemas/ValidationErrors'
+  responses:
+    Unauthenticated:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+    Forbidden:
+      description: Action is not authorized for the current user
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+    ValidationError:
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationErrorResponse'

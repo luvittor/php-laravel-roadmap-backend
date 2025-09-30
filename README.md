@@ -144,6 +144,11 @@ Accept: application/json
 
 Without this header Laravel may return an HTML response on validation failure.
 
+### OpenAPI documentation
+
+- **Swagger UI:** Once the application is running, visit <http://localhost:8000/docs/api> to browse and try the endpoints with Swagger UI.
+- **Raw spec:** The generated OpenAPI document is served at <http://localhost:8000/openapi.yaml> directly from the canonical source in [`docs/openapi/roadmap.yaml`](docs/openapi/roadmap.yaml).
+
 ### Postman Collection
 
 You can import the Postman collection and environment variables provided in this repository to quickly set up your API testing environment.
