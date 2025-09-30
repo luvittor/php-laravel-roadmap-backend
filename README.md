@@ -5,6 +5,8 @@
 [![Docker](https://img.shields.io/badge/Docker-28.0-blue)](https://www.docker.com/)
 [![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-CI/CD-blue)](https://github.com/luvittor/php-laravel-roadmap-backend/actions)
 [![deepwiki](https://img.shields.io/badge/deepwiki-article-blue)](https://deepwiki.com/luvittor/php-laravel-roadmap-backend)
+![OpenAPI](https://img.shields.io/badge/OpenAPI-3.1.0-blue)
+[![Swagger](https://img.shields.io/badge/Swagger-OpenAPI-yellowgreen)](https://swagger.io/)
 
 ## Features & Best Practices
 
@@ -143,6 +145,11 @@ Accept: application/json
 ```
 
 Without this header Laravel may return an HTML response on validation failure.
+
+### OpenAPI documentation
+
+- **Swagger UI:** Once the application is running, visit <http://localhost:8000/docs/api> to browse and try the endpoints with Swagger UI.
+- **Raw spec:** The generated OpenAPI document is served at <http://localhost:8000/openapi.yaml> directly from the canonical source in [`docs/openapi/roadmap.yaml`](docs/openapi/roadmap.yaml).
 
 ### Postman Collection
 

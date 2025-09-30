@@ -44,10 +44,13 @@ class CardController extends Controller
         $this->authorize('update', $card);
 
         $data = $request->validate([
-            'title' => 'required|string|min:0|max:255',
+            'title' => 'present|max:255',
         ]);
 
-        $card = $this->cards->updateTitle($card, $data['title']);
+        $title = $data['title'] ?? '';
+        $title = is_string($title) ? $title : '';
+
+        $card = $this->cards->updateTitle($card, $title);
 
         return response()->json($card);
     }
