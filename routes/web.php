@@ -6,3 +6,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/ping', function () {
     return new Response('pong', 200, ['Content-Type' => 'text/plain']);
 });
+
+Route::view('/docs/api', 'swagger')->name('docs.api');
