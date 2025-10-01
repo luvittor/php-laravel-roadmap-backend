@@ -5,6 +5,8 @@ info:
   description: |
     OpenAPI specification for the Roadmap backend.
     All endpoints are prefixed with `/api/v1`.
+servers:
+  - url: ./
 security:
   - SanctumToken: []
 paths:
