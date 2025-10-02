@@ -5,6 +5,24 @@ namespace App\OpenApi;
 use OpenApi\Annotations as OA;
 
 /**
+ * @OA\Info(
+ *     title="Roadmap API",
+ *     version="1.0.0",
+ *     description="OpenAPI specification for the Roadmap backend.\nAll endpoints are prefixed with `/api/v1`."
+ * )
+ *
+ * @OA\Server(
+ *     url="./",
+ *     description="Relative base path for the API"
+ * )
+ *
+ * @OA\SecurityScheme(
+ *     securityScheme="SanctumToken",
+ *     type="http",
+ *     scheme="bearer",
+ *     bearerFormat="Sanctum"
+ * )
+ *
  * @OA\Schema(
  *     schema="RegisterRequest",
  *     type="object",
@@ -147,7 +165,10 @@ use OpenApi\Annotations as OA;
  * @OA\Schema(
  *     schema="ValidationErrors",
  *     type="object",
- *     additionalProperties=@OA\Schema(type="array", @OA\Items(type="string"))
+ *     additionalProperties={
+ *         "type": "array",
+ *         "items": {"type": "string"}
+ *     }
  * )
  *
  * @OA\Schema(
@@ -207,18 +228,6 @@ use OpenApi\Annotations as OA;
  *     response="ValidationError",
  *     description="Validation failed",
  *     @OA\JsonContent(ref="#/components/schemas/ValidationErrorResponse")
- * )
- *
- * @OA\SecurityScheme(
- *     securityScheme="SanctumToken",
- *     type="http",
- *     scheme="bearer",
- *     bearerFormat="Sanctum"
- * )
- *
- * @OA\Server(
- *     url="./",
- *     description="Relative base path for the API"
  * )
  */
 class OpenApiComponents

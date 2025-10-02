@@ -4,18 +4,6 @@ return [
     'default' => 'default',
     'documentations' => [
         'default' => [
-            'api' => [
-                'title' => 'Roadmap API',
-                'description' => "OpenAPI specification for the Roadmap backend.\nAll endpoints are prefixed with `/api/v1`.",
-                'version' => '1.0.0',
-            ],
-            'servers' => [
-                [
-                    'url' => './',
-                    'description' => 'Relative base path for the API',
-                ],
-            ],
-
             'routes' => [
                 /*
                  * Route for accessing api documentation interface
@@ -174,20 +162,12 @@ return [
         ],
 
         /*
-         * API security definitions. Will be generated into documentation file.
-        */
+         * API security definitions. Required to prevent template errors.
+         * Actual security schemes are defined in OpenAPI annotations.
+         */
         'securityDefinitions' => [
             'securitySchemes' => [
-                'SanctumToken' => [
-                    'type' => 'http',
-                    'scheme' => 'bearer',
-                    'bearerFormat' => 'Sanctum',
-                ],
-            ],
-            'security' => [
-                [
-                    'SanctumToken' => [],
-                ],
+                // Empty - security schemes are defined in annotations
             ],
         ],
 
