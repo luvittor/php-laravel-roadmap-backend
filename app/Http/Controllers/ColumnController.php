@@ -10,6 +10,25 @@ class ColumnController extends Controller
 {
     public function __construct(private ColumnService $columns) {}
 
+    /**
+     * @OA\Get(
+     *     path="/api/v1/columns/{year}/{month}/cards",
+     *     summary="List cards for a month",
+     *     description="Retrieve a column (creating it if it does not yet exist) and list its cards ordered by position.",
+     *     tags={"Columns", "Cards"},
+     *     @OA\Parameter(ref="#/components/parameters/YearParam"),
+     *     @OA\Parameter(ref="#/components/parameters/MonthParam"),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Column with cards",
+     *         @OA\JsonContent(ref="#/components/schemas/ColumnWithCardsResponse")
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         ref="#/components/responses/Unauthenticated"
+     *     )
+     * )
+     */
     public function cards(YearMonthRequest $request): JsonResponse
     {
         $data = $request->validated();

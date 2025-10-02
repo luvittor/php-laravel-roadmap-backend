@@ -13,6 +13,27 @@ class AuthController extends Controller
 
     /**
      * Register a new user and return token.
+     *
+     * @OA\Post(
+     *     path="/api/v1/register",
+     *     summary="Register a new user",
+     *     description="Create a new user account and issue an API token.",
+     *     tags={"Auth"},
+     *     security={{}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/RegisterRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="User registered successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/AuthTokenResponse")
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         ref="#/components/responses/ValidationError"
+     *     )
+     * )
      */
     public function register(Request $request): JsonResponse
     {
@@ -29,6 +50,32 @@ class AuthController extends Controller
 
     /**
      * Authenticate user and return token.
+     *
+     * @OA\Post(
+     *     path="/api/v1/login",
+     *     summary="Authenticate a user",
+     *     description="Issue a Sanctum API token for an existing user.",
+     *     tags={"Auth"},
+     *     security={{}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/LoginRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Authentication successful",
+     *         @OA\JsonContent(ref="#/components/schemas/AuthTokenResponse")
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Invalid credentials",
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorMessage")
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         ref="#/components/responses/ValidationError"
+     *     )
+     * )
      */
     public function login(Request $request): JsonResponse
     {
@@ -48,6 +95,21 @@ class AuthController extends Controller
 
     /**
      * Revoke current token.
+     *
+     * @OA\Post(
+     *     path="/api/v1/logout",
+     *     summary="Revoke the current token",
+     *     tags={"Auth"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Logout confirmation",
+     *         @OA\JsonContent(ref="#/components/schemas/MessageResponse")
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         ref="#/components/responses/Unauthenticated"
+     *     )
+     * )
      */
     public function logout(Request $request): JsonResponse
     {
@@ -58,6 +120,21 @@ class AuthController extends Controller
 
     /**
      * Return authenticated user profile.
+     *
+     * @OA\Get(
+     *     path="/api/v1/user",
+     *     summary="Retrieve the authenticated user profile",
+     *     tags={"Auth"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Authenticated user profile",
+     *         @OA\JsonContent(ref="#/components/schemas/UserProfile")
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         ref="#/components/responses/Unauthenticated"
+     *     )
+     * )
      */
     public function user(Request $request): JsonResponse
     {
@@ -66,6 +143,21 @@ class AuthController extends Controller
 
     /**
      * Return authenticated pong message.
+     *
+     * @OA\Get(
+     *     path="/api/v1/ping-auth",
+     *     summary="Authenticated ping endpoint",
+     *     tags={"Auth"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Authenticated pong message",
+     *         @OA\JsonContent(ref="#/components/schemas/MessageResponse")
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         ref="#/components/responses/Unauthenticated"
+     *     )
+     * )
      */
     public function pingAuth(): JsonResponse
     {
