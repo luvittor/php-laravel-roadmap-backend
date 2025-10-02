@@ -27,6 +27,7 @@ use OpenApi\Annotations as OA;
  *     schema="RegisterRequest",
  *     type="object",
  *     required={"name","email","password"},
+ *
  *     @OA\Property(property="name", type="string", maxLength=255),
  *     @OA\Property(property="email", type="string", format="email", description="Must be unique among users."),
  *     @OA\Property(property="password", type="string", minLength=8, format="password")
@@ -36,6 +37,7 @@ use OpenApi\Annotations as OA;
  *     schema="LoginRequest",
  *     type="object",
  *     required={"email","password"},
+ *
  *     @OA\Property(property="email", type="string", format="email"),
  *     @OA\Property(property="password", type="string", format="password")
  * )
@@ -44,6 +46,7 @@ use OpenApi\Annotations as OA;
  *     schema="AuthTokenResponse",
  *     type="object",
  *     required={"token","user"},
+ *
  *     @OA\Property(property="token", type="string", description="Bearer token to use in the Authorization header."),
  *     @OA\Property(property="user", ref="#/components/schemas/AuthUserSummary")
  * )
@@ -52,6 +55,7 @@ use OpenApi\Annotations as OA;
  *     schema="AuthUserSummary",
  *     type="object",
  *     required={"id","email"},
+ *
  *     @OA\Property(property="id", type="integer"),
  *     @OA\Property(property="email", type="string", format="email")
  * )
@@ -60,6 +64,7 @@ use OpenApi\Annotations as OA;
  *     schema="MessageResponse",
  *     type="object",
  *     required={"message"},
+ *
  *     @OA\Property(property="message", type="string")
  * )
  *
@@ -67,6 +72,7 @@ use OpenApi\Annotations as OA;
  *     schema="UserProfile",
  *     type="object",
  *     required={"id","name","email","created_at","updated_at"},
+ *
  *     @OA\Property(property="id", type="integer"),
  *     @OA\Property(property="name", type="string"),
  *     @OA\Property(property="email", type="string", format="email"),
@@ -79,6 +85,7 @@ use OpenApi\Annotations as OA;
  *     schema="Column",
  *     type="object",
  *     required={"id","year","month","user_id"},
+ *
  *     @OA\Property(property="id", type="integer"),
  *     @OA\Property(property="year", type="integer", minimum=2000, maximum=4000),
  *     @OA\Property(property="month", type="integer", minimum=1, maximum=12),
@@ -91,6 +98,7 @@ use OpenApi\Annotations as OA;
  *     schema="Card",
  *     type="object",
  *     required={"id","column_id","order","title","status"},
+ *
  *     @OA\Property(property="id", type="integer"),
  *     @OA\Property(property="column_id", type="integer"),
  *     @OA\Property(property="order", type="integer", minimum=1),
@@ -106,6 +114,7 @@ use OpenApi\Annotations as OA;
  *         @OA\Schema(ref="#/components/schemas/Card"),
  *         @OA\Schema(
  *             type="object",
+ *
  *             @OA\Property(property="column", ref="#/components/schemas/Column")
  *         )
  *     }
@@ -115,10 +124,12 @@ use OpenApi\Annotations as OA;
  *     schema="ColumnWithCardsResponse",
  *     type="object",
  *     required={"column","cards"},
+ *
  *     @OA\Property(property="column", ref="#/components/schemas/Column"),
  *     @OA\Property(
  *         property="cards",
  *         type="array",
+ *
  *         @OA\Items(ref="#/components/schemas/Card")
  *     )
  * )
@@ -127,6 +138,7 @@ use OpenApi\Annotations as OA;
  *     schema="CreateCardRequest",
  *     type="object",
  *     required={"column_id","order"},
+ *
  *     @OA\Property(property="column_id", type="integer", description="Must reference an existing column."),
  *     @OA\Property(property="order", type="integer", minimum=1),
  *     @OA\Property(property="title", type="string", nullable=true, description="Defaults to an empty string when omitted.")
@@ -136,6 +148,7 @@ use OpenApi\Annotations as OA;
  *     schema="UpdateTitleRequest",
  *     type="object",
  *     required={"title"},
+ *
  *     @OA\Property(property="title", type="string", minLength=0, maxLength=255)
  * )
  *
@@ -143,6 +156,7 @@ use OpenApi\Annotations as OA;
  *     schema="UpdateStatusRequest",
  *     type="object",
  *     required={"status"},
+ *
  *     @OA\Property(property="status", type="string", enum={"not_started","in_progress","completed"})
  * )
  *
@@ -150,6 +164,7 @@ use OpenApi\Annotations as OA;
  *     schema="UpdatePositionRequest",
  *     type="object",
  *     required={"year","month","order"},
+ *
  *     @OA\Property(property="year", type="integer", minimum=2000, maximum=4000),
  *     @OA\Property(property="month", type="integer", minimum=1, maximum=12),
  *     @OA\Property(property="order", type="integer", minimum=1)
@@ -159,6 +174,7 @@ use OpenApi\Annotations as OA;
  *     schema="ErrorMessage",
  *     type="object",
  *     required={"message"},
+ *
  *     @OA\Property(property="message", type="string")
  * )
  *
@@ -170,11 +186,11 @@ use OpenApi\Annotations as OA;
  *         "items": {"type": "string"}
  *     }
  * )
- *
  * @OA\Schema(
  *     schema="ValidationErrorResponse",
  *     type="object",
  *     required={"message","errors"},
+ *
  *     @OA\Property(property="message", type="string"),
  *     @OA\Property(property="errors", ref="#/components/schemas/ValidationErrors")
  * )
@@ -185,6 +201,7 @@ use OpenApi\Annotations as OA;
  *     in="path",
  *     required=true,
  *     description="Target year for the column.",
+ *
  *     @OA\Schema(type="integer", minimum=2000, maximum=4000)
  * )
  *
@@ -194,6 +211,7 @@ use OpenApi\Annotations as OA;
  *     in="path",
  *     required=true,
  *     description="Target month for the column.",
+ *
  *     @OA\Schema(type="integer", minimum=1, maximum=12)
  * )
  *
@@ -203,33 +221,36 @@ use OpenApi\Annotations as OA;
  *     in="path",
  *     required=true,
  *     description="Identifier of the card.",
+ *
  *     @OA\Schema(type="integer", minimum=1)
  * )
  *
  * @OA\Response(
  *     response="Unauthenticated",
  *     description="Authentication required",
+ *
  *     @OA\JsonContent(ref="#/components/schemas/ErrorMessage")
  * )
  *
  * @OA\Response(
  *     response="Forbidden",
  *     description="Action is not authorized for the current user",
+ *
  *     @OA\JsonContent(ref="#/components/schemas/ErrorMessage")
  * )
  *
  * @OA\Response(
  *     response="NotFound",
  *     description="Resource not found",
+ *
  *     @OA\JsonContent(ref="#/components/schemas/ErrorMessage")
  * )
  *
  * @OA\Response(
  *     response="ValidationError",
  *     description="Validation failed",
+ *
  *     @OA\JsonContent(ref="#/components/schemas/ValidationErrorResponse")
  * )
  */
-class OpenApiComponents
-{
-}
+class OpenApiComponents {}

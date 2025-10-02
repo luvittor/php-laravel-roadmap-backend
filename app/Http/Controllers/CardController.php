@@ -20,20 +20,27 @@ class CardController extends Controller
      *     path="/api/v1/cards",
      *     summary="Create a card",
      *     tags={"Cards"},
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\JsonContent(ref="#/components/schemas/CreateCardRequest")
      *     ),
+     *
      *     @OA\Response(
      *         response=201,
      *         description="Card created",
+     *
      *         @OA\Header(
      *             header="Location",
      *             description="URL to the newly created card resource",
+     *
      *             @OA\Schema(type="string", format="uri")
      *         ),
+     *
      *         @OA\JsonContent(ref="#/components/schemas/Card")
      *     ),
+     *
      *     @OA\Response(
      *         response=401,
      *         ref="#/components/responses/Unauthenticated"
@@ -71,12 +78,16 @@ class CardController extends Controller
      *     path="/api/v1/cards/{card}",
      *     summary="Retrieve a card",
      *     tags={"Cards"},
+     *
      *     @OA\Parameter(ref="#/components/parameters/CardIdParam"),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Card details",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/CardWithColumn")
      *     ),
+     *
      *     @OA\Response(
      *         response=401,
      *         ref="#/components/responses/Unauthenticated"
@@ -103,16 +114,22 @@ class CardController extends Controller
      *     path="/api/v1/cards/{card}/title",
      *     summary="Update a card title",
      *     tags={"Cards"},
+     *
      *     @OA\Parameter(ref="#/components/parameters/CardIdParam"),
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\JsonContent(ref="#/components/schemas/UpdateTitleRequest")
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Updated card",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/CardWithColumn")
      *     ),
+     *
      *     @OA\Response(
      *         response=401,
      *         ref="#/components/responses/Unauthenticated"
@@ -152,16 +169,22 @@ class CardController extends Controller
      *     path="/api/v1/cards/{card}/status",
      *     summary="Update a card status",
      *     tags={"Cards"},
+     *
      *     @OA\Parameter(ref="#/components/parameters/CardIdParam"),
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\JsonContent(ref="#/components/schemas/UpdateStatusRequest")
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Updated card",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/CardWithColumn")
      *     ),
+     *
      *     @OA\Response(
      *         response=401,
      *         ref="#/components/responses/Unauthenticated"
@@ -198,16 +221,22 @@ class CardController extends Controller
      *     path="/api/v1/cards/{card}/position",
      *     summary="Move a card to a different position or month",
      *     tags={"Cards"},
+     *
      *     @OA\Parameter(ref="#/components/parameters/CardIdParam"),
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\JsonContent(ref="#/components/schemas/UpdatePositionRequest")
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Updated card",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/CardWithColumn")
      *     ),
+     *
      *     @OA\Response(
      *         response=401,
      *         ref="#/components/responses/Unauthenticated"
@@ -244,12 +273,16 @@ class CardController extends Controller
      *     path="/api/v1/cards/{card}",
      *     summary="Delete a card",
      *     tags={"Cards"},
+     *
      *     @OA\Parameter(ref="#/components/parameters/CardIdParam"),
+     *
      *     @OA\Response(
      *         response=204,
      *         description="Card deleted",
+     *
      *         @OA\JsonContent(type="object", example={})
      *     ),
+     *
      *     @OA\Response(
      *         response=401,
      *         ref="#/components/responses/Unauthenticated"
