@@ -8,6 +8,7 @@ use App\Services\CardService;
 use App\Services\ColumnService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response;
 
 class CardController extends Controller

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\YearMonthRequest;
 use App\Services\ColumnService;
 use Illuminate\Http\JsonResponse;
+use OpenApi\Annotations as OA;
 
 class ColumnController extends Controller
 {
