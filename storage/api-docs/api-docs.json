@@ -15,7 +15,7 @@
         "/api/v1/register": {
             "post": {
                 "tags": [
-                    "Auth"
+                    "auth"
                 ],
                 "summary": "Register a new user",
                 "description": "Create a new user account and issue an API token.",
@@ -53,7 +53,7 @@
         "/api/v1/login": {
             "post": {
                 "tags": [
-                    "Auth"
+                    "auth"
                 ],
                 "summary": "Authenticate a user",
                 "description": "Issue a Sanctum API token for an existing user.",
@@ -101,7 +101,7 @@
         "/api/v1/logout": {
             "post": {
                 "tags": [
-                    "Auth"
+                    "auth"
                 ],
                 "summary": "Revoke the current token",
                 "description": "Revoke current token.",
@@ -126,7 +126,7 @@
         "/api/v1/user": {
             "get": {
                 "tags": [
-                    "Auth"
+                    "auth"
                 ],
                 "summary": "Retrieve the authenticated user profile",
                 "description": "Return authenticated user profile.",
@@ -151,7 +151,7 @@
         "/api/v1/ping-auth": {
             "get": {
                 "tags": [
-                    "Auth"
+                    "auth"
                 ],
                 "summary": "Authenticated ping endpoint",
                 "description": "Return authenticated pong message.",
@@ -176,7 +176,7 @@
         "/api/v1/cards": {
             "post": {
                 "tags": [
-                    "Cards"
+                    "cards"
                 ],
                 "summary": "Create a card",
                 "operationId": "61e21287a78dfdbf61488bfcbfb1df39",
@@ -225,7 +225,7 @@
         "/api/v1/cards/{card}": {
             "get": {
                 "tags": [
-                    "Cards"
+                    "cards"
                 ],
                 "summary": "Retrieve a card",
                 "operationId": "5c909e72f4f8cefcf2cdc7aeb6dcb2b3",
@@ -258,7 +258,7 @@
             },
             "delete": {
                 "tags": [
-                    "Cards"
+                    "cards"
                 ],
                 "summary": "Delete a card",
                 "operationId": "4d24e63d8dd481e2ef9994a8f9ce2732",
@@ -294,7 +294,7 @@
         "/api/v1/cards/{card}/title": {
             "patch": {
                 "tags": [
-                    "Cards"
+                    "cards"
                 ],
                 "summary": "Update a card title",
                 "operationId": "4abac1529369b18351b3ab429f16c3d9",
@@ -342,7 +342,7 @@
         "/api/v1/cards/{card}/status": {
             "patch": {
                 "tags": [
-                    "Cards"
+                    "cards"
                 ],
                 "summary": "Update a card status",
                 "operationId": "980906442e42c589feaa60fe19db2a98",
@@ -390,7 +390,7 @@
         "/api/v1/cards/{card}/position": {
             "patch": {
                 "tags": [
-                    "Cards"
+                    "cards"
                 ],
                 "summary": "Move a card to a different position or month",
                 "operationId": "6b8addaa57f7afdf91404814017ea2de",
@@ -438,8 +438,8 @@
         "/api/v1/columns/{year}/{month}/cards": {
             "get": {
                 "tags": [
-                    "Columns",
-                    "Cards"
+                    "columns",
+                    "cards"
                 ],
                 "summary": "List cards for a month",
                 "description": "Retrieve a column (creating it if it does not yet exist) and list its cards ordered by position.",
@@ -913,16 +913,16 @@
     },
     "tags": [
         {
-            "name": "Auth",
-            "description": "Auth"
+            "name": "auth",
+            "description": "auth"
         },
         {
-            "name": "Cards",
-            "description": "Cards"
+            "name": "cards",
+            "description": "cards"
         },
         {
-            "name": "Columns",
-            "description": "Columns"
+            "name": "columns",
+            "description": "columns"
         }
     ]
 }

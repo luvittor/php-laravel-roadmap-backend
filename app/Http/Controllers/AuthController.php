@@ -19,7 +19,7 @@ class AuthController extends Controller
      *     path="/api/v1/register",
      *     summary="Register a new user",
      *     description="Create a new user account and issue an API token.",
-     *     tags={"Auth"},
+     *     tags={"auth"},
      *     security={{}},
      *
      *     @OA\RequestBody(
@@ -61,7 +61,7 @@ class AuthController extends Controller
      *     path="/api/v1/login",
      *     summary="Authenticate a user",
      *     description="Issue a Sanctum API token for an existing user.",
-     *     tags={"Auth"},
+     *     tags={"auth"},
      *     security={{}},
      *
      *     @OA\RequestBody(
@@ -112,7 +112,7 @@ class AuthController extends Controller
      * @OA\Post(
      *     path="/api/v1/logout",
      *     summary="Revoke the current token",
-     *     tags={"Auth"},
+     *     tags={"auth"},
      *
      *     @OA\Response(
      *         response=200,
@@ -140,7 +140,7 @@ class AuthController extends Controller
      * @OA\Get(
      *     path="/api/v1/user",
      *     summary="Retrieve the authenticated user profile",
-     *     tags={"Auth"},
+     *     tags={"auth"},
      *
      *     @OA\Response(
      *         response=200,
@@ -166,7 +166,7 @@ class AuthController extends Controller
      * @OA\Get(
      *     path="/api/v1/ping-auth",
      *     summary="Authenticated ping endpoint",
-     *     tags={"Auth"},
+     *     tags={"auth"},
      *
      *     @OA\Response(
      *         response=200,

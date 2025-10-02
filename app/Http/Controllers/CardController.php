@@ -19,7 +19,7 @@ class CardController extends Controller
      * @OA\Post(
      *     path="/api/v1/cards",
      *     summary="Create a card",
-     *     tags={"Cards"},
+     *     tags={"cards"},
      *
      *     @OA\RequestBody(
      *         required=true,
@@ -77,7 +77,7 @@ class CardController extends Controller
      * @OA\Get(
      *     path="/api/v1/cards/{card}",
      *     summary="Retrieve a card",
-     *     tags={"Cards"},
+     *     tags={"cards"},
      *
      *     @OA\Parameter(ref="#/components/parameters/CardIdParam"),
      *
@@ -113,7 +113,7 @@ class CardController extends Controller
      * @OA\Patch(
      *     path="/api/v1/cards/{card}/title",
      *     summary="Update a card title",
-     *     tags={"Cards"},
+     *     tags={"cards"},
      *
      *     @OA\Parameter(ref="#/components/parameters/CardIdParam"),
      *
@@ -168,7 +168,7 @@ class CardController extends Controller
      * @OA\Patch(
      *     path="/api/v1/cards/{card}/status",
      *     summary="Update a card status",
-     *     tags={"Cards"},
+     *     tags={"cards"},
      *
      *     @OA\Parameter(ref="#/components/parameters/CardIdParam"),
      *
@@ -220,7 +220,7 @@ class CardController extends Controller
      * @OA\Patch(
      *     path="/api/v1/cards/{card}/position",
      *     summary="Move a card to a different position or month",
-     *     tags={"Cards"},
+     *     tags={"cards"},
      *
      *     @OA\Parameter(ref="#/components/parameters/CardIdParam"),
      *
@@ -272,7 +272,7 @@ class CardController extends Controller
      * @OA\Delete(
      *     path="/api/v1/cards/{card}",
      *     summary="Delete a card",
-     *     tags={"Cards"},
+     *     tags={"cards"},
      *
      *     @OA\Parameter(ref="#/components/parameters/CardIdParam"),
      *
