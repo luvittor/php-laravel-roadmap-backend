@@ -8,12 +8,53 @@ use App\Services\CardService;
 use App\Services\ColumnService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response;
 
 class CardController extends Controller
 {
     public function __construct(private CardService $cards, private ColumnService $columns) {}
 
+    /**
+     * @OA\Post(
+     *     path="/api/v1/cards",
+     *     summary="Create a card",
+     *     tags={"cards"},
+     *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(ref="#/components/schemas/CreateCardRequest")
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=201,
+     *         description="Card created",
+     *
+     *         @OA\Header(
+     *             header="Location",
+     *             description="URL to the newly created card resource",
+     *
+     *             @OA\Schema(type="string", format="uri")
+     *         ),
+     *
+     *         @OA\JsonContent(ref="#/components/schemas/Card")
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=401,
+     *         ref="#/components/responses/Unauthenticated"
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         ref="#/components/responses/Forbidden"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         ref="#/components/responses/ValidationError"
+     *     )
+     * )
+     */
     public function store(Request $request): JsonResponse
     {
         $data = $request->validate([
@@ -32,6 +73,35 @@ class CardController extends Controller
             ->header('Location', route('cards.show', $card));
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/v1/cards/{card}",
+     *     summary="Retrieve a card",
+     *     tags={"cards"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/CardIdParam"),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Card details",
+     *
+     *         @OA\JsonContent(ref="#/components/schemas/CardWithColumn")
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=401,
+     *         ref="#/components/responses/Unauthenticated"
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         ref="#/components/responses/Forbidden"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         ref="#/components/responses/NotFound"
+     *     )
+     * )
+     */
     public function show(Card $card): JsonResponse
     {
         $this->authorize('view', $card);
@@ -39,6 +109,45 @@ class CardController extends Controller
         return response()->json($card);
     }
 
+    /**
+     * @OA\Patch(
+     *     path="/api/v1/cards/{card}/title",
+     *     summary="Update a card title",
+     *     tags={"cards"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/CardIdParam"),
+     *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(ref="#/components/schemas/UpdateTitleRequest")
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Updated card",
+     *
+     *         @OA\JsonContent(ref="#/components/schemas/CardWithColumn")
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=401,
+     *         ref="#/components/responses/Unauthenticated"
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         ref="#/components/responses/Forbidden"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         ref="#/components/responses/NotFound"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         ref="#/components/responses/ValidationError"
+     *     )
+     * )
+     */
     public function updateTitle(Request $request, Card $card): JsonResponse
     {
         $this->authorize('update', $card);
@@ -55,6 +164,45 @@ class CardController extends Controller
         return response()->json($card);
     }
 
+    /**
+     * @OA\Patch(
+     *     path="/api/v1/cards/{card}/status",
+     *     summary="Update a card status",
+     *     tags={"cards"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/CardIdParam"),
+     *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(ref="#/components/schemas/UpdateStatusRequest")
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Updated card",
+     *
+     *         @OA\JsonContent(ref="#/components/schemas/CardWithColumn")
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=401,
+     *         ref="#/components/responses/Unauthenticated"
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         ref="#/components/responses/Forbidden"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         ref="#/components/responses/NotFound"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         ref="#/components/responses/ValidationError"
+     *     )
+     * )
+     */
     public function updateStatus(Request $request, Card $card): JsonResponse
     {
         $this->authorize('update', $card);
@@ -68,6 +216,45 @@ class CardController extends Controller
         return response()->json($card);
     }
 
+    /**
+     * @OA\Patch(
+     *     path="/api/v1/cards/{card}/position",
+     *     summary="Move a card to a different position or month",
+     *     tags={"cards"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/CardIdParam"),
+     *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(ref="#/components/schemas/UpdatePositionRequest")
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Updated card",
+     *
+     *         @OA\JsonContent(ref="#/components/schemas/CardWithColumn")
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=401,
+     *         ref="#/components/responses/Unauthenticated"
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         ref="#/components/responses/Forbidden"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         ref="#/components/responses/NotFound"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         ref="#/components/responses/ValidationError"
+     *     )
+     * )
+     */
     public function updatePosition(PositionRequest $request, Card $card): JsonResponse
     {
         $this->authorize('update', $card);
@@ -81,6 +268,35 @@ class CardController extends Controller
         return response()->json($card);
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/v1/cards/{card}",
+     *     summary="Delete a card",
+     *     tags={"cards"},
+     *
+     *     @OA\Parameter(ref="#/components/parameters/CardIdParam"),
+     *
+     *     @OA\Response(
+     *         response=204,
+     *         description="Card deleted",
+     *
+     *         @OA\JsonContent(type="object", example={})
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=401,
+     *         ref="#/components/responses/Unauthenticated"
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         ref="#/components/responses/Forbidden"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         ref="#/components/responses/NotFound"
+     *     )
+     * )
+     */
     public function destroy(Card $card): Response
     {
         $this->authorize('delete', $card);
