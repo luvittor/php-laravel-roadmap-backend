@@ -27,6 +27,7 @@ use OpenApi\Annotations as OA;
  *     {"SanctumToken": {}}
  * )
 
+ *
  * @OA\Schema(
  *     schema="RegisterRequest",
  *     type="object",
