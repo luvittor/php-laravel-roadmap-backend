@@ -20,6 +20,7 @@ class CardController extends Controller
      *     path="/api/v1/cards",
      *     summary="Create a card",
      *     tags={"cards"},
+     *     security={{"SanctumToken": {}}},
      *
      *     @OA\RequestBody(
      *         required=true,
@@ -78,6 +79,7 @@ class CardController extends Controller
      *     path="/api/v1/cards/{card}",
      *     summary="Retrieve a card",
      *     tags={"cards"},
+     *     security={{"SanctumToken": {}}},
      *
      *     @OA\Parameter(ref="#/components/parameters/CardIdParam"),
      *
@@ -114,6 +116,7 @@ class CardController extends Controller
      *     path="/api/v1/cards/{card}/title",
      *     summary="Update a card title",
      *     tags={"cards"},
+     *     security={{"SanctumToken": {}}},
      *
      *     @OA\Parameter(ref="#/components/parameters/CardIdParam"),
      *
@@ -169,6 +172,7 @@ class CardController extends Controller
      *     path="/api/v1/cards/{card}/status",
      *     summary="Update a card status",
      *     tags={"cards"},
+     *     security={{"SanctumToken": {}}},
      *
      *     @OA\Parameter(ref="#/components/parameters/CardIdParam"),
      *
@@ -221,6 +225,7 @@ class CardController extends Controller
      *     path="/api/v1/cards/{card}/position",
      *     summary="Move a card to a different position or month",
      *     tags={"cards"},
+     *     security={{"SanctumToken": {}}},
      *
      *     @OA\Parameter(ref="#/components/parameters/CardIdParam"),
      *
@@ -273,6 +278,7 @@ class CardController extends Controller
      *     path="/api/v1/cards/{card}",
      *     summary="Delete a card",
      *     tags={"cards"},
+     *     security={{"SanctumToken": {}}},
      *
      *     @OA\Parameter(ref="#/components/parameters/CardIdParam"),
      *

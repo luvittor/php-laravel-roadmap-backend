@@ -23,6 +23,10 @@ use OpenApi\Annotations as OA;
  *     bearerFormat="Sanctum"
  * )
  *
+ * @OA\SecurityRequirement(
+ *     {"SanctumToken": {}}
+ * )
+
  * @OA\Schema(
  *     schema="RegisterRequest",
  *     type="object",

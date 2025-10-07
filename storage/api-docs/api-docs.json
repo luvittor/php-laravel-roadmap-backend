@@ -120,7 +120,12 @@
                     "401": {
                         "$ref": "#/components/responses/Unauthenticated"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "SanctumToken": []
+                    }
+                ]
             }
         },
         "/api/v1/user": {
@@ -145,7 +150,12 @@
                     "401": {
                         "$ref": "#/components/responses/Unauthenticated"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "SanctumToken": []
+                    }
+                ]
             }
         },
         "/api/v1/ping-auth": {
@@ -170,7 +180,12 @@
                     "401": {
                         "$ref": "#/components/responses/Unauthenticated"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "SanctumToken": []
+                    }
+                ]
             }
         },
         "/api/v1/cards": {
@@ -219,7 +234,12 @@
                     "422": {
                         "$ref": "#/components/responses/ValidationError"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "SanctumToken": []
+                    }
+                ]
             }
         },
         "/api/v1/cards/{card}": {
@@ -254,7 +274,12 @@
                     "404": {
                         "$ref": "#/components/responses/NotFound"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "SanctumToken": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -288,7 +313,12 @@
                     "404": {
                         "$ref": "#/components/responses/NotFound"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "SanctumToken": []
+                    }
+                ]
             }
         },
         "/api/v1/cards/{card}/title": {
@@ -336,7 +366,12 @@
                     "422": {
                         "$ref": "#/components/responses/ValidationError"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "SanctumToken": []
+                    }
+                ]
             }
         },
         "/api/v1/cards/{card}/status": {
@@ -384,7 +419,12 @@
                     "422": {
                         "$ref": "#/components/responses/ValidationError"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "SanctumToken": []
+                    }
+                ]
             }
         },
         "/api/v1/cards/{card}/position": {
@@ -432,7 +472,12 @@
                     "422": {
                         "$ref": "#/components/responses/ValidationError"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "SanctumToken": []
+                    }
+                ]
             }
         },
         "/api/v1/columns/{year}/{month}/cards": {
@@ -466,7 +511,12 @@
                     "401": {
                         "$ref": "#/components/responses/Unauthenticated"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "SanctumToken": []
+                    }
+                ]
             }
         }
     },

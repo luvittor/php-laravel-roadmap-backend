@@ -113,6 +113,7 @@ class AuthController extends Controller
      *     path="/api/v1/logout",
      *     summary="Revoke the current token",
      *     tags={"auth"},
+     *     security={{"SanctumToken": {}}},
      *
      *     @OA\Response(
      *         response=200,
@@ -141,6 +142,7 @@ class AuthController extends Controller
      *     path="/api/v1/user",
      *     summary="Retrieve the authenticated user profile",
      *     tags={"auth"},
+     *     security={{"SanctumToken": {}}},
      *
      *     @OA\Response(
      *         response=200,
@@ -167,6 +169,7 @@ class AuthController extends Controller
      *     path="/api/v1/ping-auth",
      *     summary="Authenticated ping endpoint",
      *     tags={"auth"},
+     *     security={{"SanctumToken": {}}},
      *
      *     @OA\Response(
      *         response=200,
