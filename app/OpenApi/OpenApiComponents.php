@@ -147,7 +147,7 @@ use OpenApi\Annotations as OA;
  *
  *     @OA\Property(property="column_id", type="integer", description="Must reference an existing column."),
  *     @OA\Property(property="order", type="integer", minimum=1),
- *     @OA\Property(property="title", type="string", nullable=true, description="Defaults to an empty string when omitted.")
+ *     @OA\Property(property="title", type="string", nullable=true, description="Optional card title; omit or pass null for no title.")
  * )
  *
  * @OA\Schema(
