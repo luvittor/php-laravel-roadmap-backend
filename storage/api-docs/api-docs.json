@@ -961,6 +961,11 @@
             }
         }
     },
+    "security": [
+        {
+            "SanctumToken": []
+        }
+    ],
     "tags": [
         {
             "name": "auth",
