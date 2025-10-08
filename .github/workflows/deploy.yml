@@ -65,10 +65,7 @@ jobs:
             rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/.env*
             rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/storage/logs/*.log
             rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/tests
-            
-            # Keep docs directory (contains OpenAPI specification files)
-            # rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/docs
-            
+            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/docs
             rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/Dockerfile*
             rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/docker-compose.yml
             
