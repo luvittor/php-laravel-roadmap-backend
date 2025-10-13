@@ -148,8 +148,8 @@ Without this header Laravel may return an HTML response on validation failure.
 
 ### OpenAPI documentation
 
-- **Swagger UI:** Once the application is running, visit <http://localhost:8000/docs/api> to browse and try the endpoints with Swagger UI.
-- **Raw spec:** The generated OpenAPI document is served at <http://localhost:8000/openapi.yaml> directly from the canonical source in [`docs/openapi/roadmap.yaml`](docs/openapi/roadmap.yaml).
+- **Swagger UI:** Once the application is running, visit <http://127.0.0.1:8000/api/documentation> to browse and try the endpoints with Swagger UI.
+- **Raw spec:** The generated OpenAPI document is served at <http://127.0.0.1:8000/docs?api-docs.json>.
 
 ### Postman Collection
 

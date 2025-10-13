@@ -1,0 +1,983 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Roadmap API",
+        "description": "OpenAPI specification for the Roadmap backend.\\nAll endpoints are prefixed with `/api/v1`.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "./",
+            "description": "Relative base path for the API"
+        }
+    ],
+    "paths": {
+        "/api/v1/register": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Register a new user",
+                "description": "Create a new user account and issue an API token.",
+                "operationId": "6796c44e1f6079c411abbfed066c5907",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User registered successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthTokenResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {}
+                ]
+            }
+        },
+        "/api/v1/login": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Authenticate a user",
+                "description": "Issue a Sanctum API token for an existing user.",
+                "operationId": "da2ca4d7a5cdec77b8b45a20373535cb",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Authentication successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthTokenResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorMessage"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {}
+                ]
+            }
+        },
+        "/api/v1/logout": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Revoke the current token",
+                "description": "Revoke current token.",
+                "operationId": "c4eddaf1a2e990cc90e4326c0d731d41",
+                "responses": {
+                    "200": {
+                        "description": "Logout confirmation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MessageResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "SanctumToken": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/user": {
+            "get": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Retrieve the authenticated user profile",
+                "description": "Return authenticated user profile.",
+                "operationId": "6804f9f92bfdc4d8fe300f2c5cc35d19",
+                "responses": {
+                    "200": {
+                        "description": "Authenticated user profile",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserProfile"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "SanctumToken": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/ping-auth": {
+            "get": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Authenticated ping endpoint",
+                "description": "Return authenticated pong message.",
+                "operationId": "b76c746cf528bf81c0debd53965628aa",
+                "responses": {
+                    "200": {
+                        "description": "Authenticated pong message",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MessageResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "SanctumToken": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/cards": {
+            "post": {
+                "tags": [
+                    "cards"
+                ],
+                "summary": "Create a card",
+                "operationId": "61e21287a78dfdbf61488bfcbfb1df39",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateCardRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Card created",
+                        "headers": {
+                            "Location": {
+                                "description": "URL to the newly created card resource",
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uri"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Card"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "SanctumToken": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/cards/{card}": {
+            "get": {
+                "tags": [
+                    "cards"
+                ],
+                "summary": "Retrieve a card",
+                "operationId": "5c909e72f4f8cefcf2cdc7aeb6dcb2b3",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/CardIdParam"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Card details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CardWithColumn"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                },
+                "security": [
+                    {
+                        "SanctumToken": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "cards"
+                ],
+                "summary": "Delete a card",
+                "operationId": "4d24e63d8dd481e2ef9994a8f9ce2732",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/CardIdParam"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Card deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": []
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                },
+                "security": [
+                    {
+                        "SanctumToken": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/cards/{card}/title": {
+            "patch": {
+                "tags": [
+                    "cards"
+                ],
+                "summary": "Update a card title",
+                "operationId": "4abac1529369b18351b3ab429f16c3d9",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/CardIdParam"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateTitleRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Updated card",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CardWithColumn"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "SanctumToken": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/cards/{card}/status": {
+            "patch": {
+                "tags": [
+                    "cards"
+                ],
+                "summary": "Update a card status",
+                "operationId": "980906442e42c589feaa60fe19db2a98",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/CardIdParam"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateStatusRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Updated card",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CardWithColumn"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "SanctumToken": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/cards/{card}/position": {
+            "patch": {
+                "tags": [
+                    "cards"
+                ],
+                "summary": "Move a card to a different position or month",
+                "operationId": "6b8addaa57f7afdf91404814017ea2de",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/CardIdParam"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdatePositionRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Updated card",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CardWithColumn"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthenticated"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                },
+                "security": [
+                    {
+                        "SanctumToken": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/columns/{year}/{month}/cards": {
+            "get": {
+                "tags": [
+                    "columns",
+                    "cards"
+                ],
+                "summary": "List cards for a month",
+                "description": "Retrieve a column (creating it if it does not yet exist) and list its cards ordered by position.",
+                "operationId": "d4918ff624b5d46690b53009fc829594",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/YearParam"
+                    },
+                    {
+                        "$ref": "#/components/parameters/MonthParam"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Column with cards",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ColumnWithCardsResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "SanctumToken": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "RegisterRequest": {
+                "required": [
+                    "name",
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "email": {
+                        "description": "Must be unique among users.",
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "minLength": 8
+                    }
+                },
+                "type": "object"
+            },
+            "LoginRequest": {
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password"
+                    }
+                },
+                "type": "object"
+            },
+            "AuthTokenResponse": {
+                "required": [
+                    "token",
+                    "user"
+                ],
+                "properties": {
+                    "token": {
+                        "description": "Bearer token to use in the Authorization header.",
+                        "type": "string"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/AuthUserSummary"
+                    }
+                },
+                "type": "object"
+            },
+            "AuthUserSummary": {
+                "required": [
+                    "id",
+                    "email"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    }
+                },
+                "type": "object"
+            },
+            "MessageResponse": {
+                "required": [
+                    "message"
+                ],
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UserProfile": {
+                "required": [
+                    "id",
+                    "name",
+                    "email",
+                    "created_at",
+                    "updated_at"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "email_verified_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Column": {
+                "required": [
+                    "id",
+                    "year",
+                    "month",
+                    "user_id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "year": {
+                        "type": "integer",
+                        "maximum": 4000,
+                        "minimum": 2000
+                    },
+                    "month": {
+                        "type": "integer",
+                        "maximum": 12,
+                        "minimum": 1
+                    },
+                    "user_id": {
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Card": {
+                "required": [
+                    "id",
+                    "column_id",
+                    "order",
+                    "title",
+                    "status"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "column_id": {
+                        "type": "integer"
+                    },
+                    "order": {
+                        "type": "integer",
+                        "minimum": 1
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "not_started",
+                            "in_progress",
+                            "completed"
+                        ]
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "CardWithColumn": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Card"
+                    },
+                    {
+                        "properties": {
+                            "column": {
+                                "$ref": "#/components/schemas/Column"
+                            }
+                        },
+                        "type": "object"
+                    }
+                ]
+            },
+            "ColumnWithCardsResponse": {
+                "required": [
+                    "column",
+                    "cards"
+                ],
+                "properties": {
+                    "column": {
+                        "$ref": "#/components/schemas/Column"
+                    },
+                    "cards": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Card"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "CreateCardRequest": {
+                "required": [
+                    "column_id",
+                    "order"
+                ],
+                "properties": {
+                    "column_id": {
+                        "description": "Must reference an existing column.",
+                        "type": "integer"
+                    },
+                    "order": {
+                        "type": "integer",
+                        "minimum": 1
+                    },
+                    "title": {
+                        "description": "Defaults to an empty string when omitted.",
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateTitleRequest": {
+                "required": [
+                    "title"
+                ],
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 0
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateStatusRequest": {
+                "required": [
+                    "status"
+                ],
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "not_started",
+                            "in_progress",
+                            "completed"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "UpdatePositionRequest": {
+                "required": [
+                    "year",
+                    "month",
+                    "order"
+                ],
+                "properties": {
+                    "year": {
+                        "type": "integer",
+                        "maximum": 4000,
+                        "minimum": 2000
+                    },
+                    "month": {
+                        "type": "integer",
+                        "maximum": 12,
+                        "minimum": 1
+                    },
+                    "order": {
+                        "type": "integer",
+                        "minimum": 1
+                    }
+                },
+                "type": "object"
+            },
+            "ErrorMessage": {
+                "required": [
+                    "message"
+                ],
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "ValidationErrors": {
+                "type": "object",
+                "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ValidationErrorResponse": {
+                "required": [
+                    "message",
+                    "errors"
+                ],
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    },
+                    "errors": {
+                        "$ref": "#/components/schemas/ValidationErrors"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "responses": {
+            "Unauthenticated": {
+                "description": "Authentication required",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ErrorMessage"
+                        }
+                    }
+                }
+            },
+            "Forbidden": {
+                "description": "Action is not authorized for the current user",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ErrorMessage"
+                        }
+                    }
+                }
+            },
+            "NotFound": {
+                "description": "Resource not found",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ErrorMessage"
+                        }
+                    }
+                }
+            },
+            "ValidationError": {
+                "description": "Validation failed",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ValidationErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "parameters": {
+            "YearParam": {
+                "name": "year",
+                "in": "path",
+                "description": "Target year for the column.",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "maximum": 4000,
+                    "minimum": 2000
+                }
+            },
+            "MonthParam": {
+                "name": "month",
+                "in": "path",
+                "description": "Target month for the column.",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "maximum": 12,
+                    "minimum": 1
+                }
+            },
+            "CardIdParam": {
+                "name": "card",
+                "in": "path",
+                "description": "Identifier of the card.",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "minimum": 1
+                }
+            }
+        },
+        "securitySchemes": {
+            "SanctumToken": {
+                "type": "http",
+                "bearerFormat": "Sanctum",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "security": [
+        {
+            "SanctumToken": []
+        }
+    ],
+    "tags": [
+        {
+            "name": "auth",
+            "description": "auth"
+        },
+        {
+            "name": "cards",
+            "description": "cards"
+        },
+        {
+            "name": "columns",
+            "description": "columns"
+        }
+    ]
+}
