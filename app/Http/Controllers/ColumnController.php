@@ -17,6 +17,7 @@ class ColumnController extends Controller
      *     summary="List cards for a month",
      *     description="Retrieve a column (creating it if it does not yet exist) and list its cards ordered by position.",
      *     tags={"columns", "cards"},
+     *     security={{"SanctumToken": {}}},
      *
      *     @OA\Parameter(ref="#/components/parameters/YearParam"),
      *     @OA\Parameter(ref="#/components/parameters/MonthParam"),
