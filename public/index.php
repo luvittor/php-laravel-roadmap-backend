@@ -10,6 +10,13 @@ if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php'))
     require $maintenance;
 }
 
+// Behind the root .htaccess rewrite the URL has no /public/ segment, so point
+// SCRIPT_NAME to the app root for Laravel to detect the base URL correctly...
+$publicDir = dirname($_SERVER['SCRIPT_NAME'] ?? '/index.php');
+if ($publicDir !== '/' && ! str_starts_with($_SERVER['REQUEST_URI'] ?? '', $publicDir.'/')) {
+    $_SERVER['SCRIPT_NAME'] = $_SERVER['PHP_SELF'] = dirname($publicDir).'/index.php';
+}
+
 // Register the Composer autoloader...
 require __DIR__.'/../vendor/autoload.php';
 
