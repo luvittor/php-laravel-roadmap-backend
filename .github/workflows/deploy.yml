@@ -72,6 +72,14 @@ jobs:
             # Copy .env file to the temp directory
             cp /home/dh_jirb5e/vittoretti.com_envs/roadmap_api.env /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/.env
 
+            # Only public/ is served: /public/* keeps working (current frontend),
+            # any other path is rewritten into public/ (composer.json, vendor, etc. become 404)
+            printf '%s\n' \
+              'Options -Indexes' \
+              'RewriteEngine On' \
+              'RewriteRule ^public/ - [L]' \
+              'RewriteRule ^(.*)$ public/$1 [L]' > /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/.htaccess
+
             # Create the target directory if it doesn't exist
             mkdir -p /home/dh_jirb5e/vittoretti.com/roadmap
 
