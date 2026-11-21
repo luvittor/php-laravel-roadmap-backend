@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\YearMonthRequest;
+use App\Models\Column;
 use App\Services\ColumnService;
 use Illuminate\Http\JsonResponse;
 use OpenApi\Annotations as OA;
@@ -15,7 +16,7 @@ class ColumnController extends Controller
      * @OA\Get(
      *     path="/api/v1/columns/{year}/{month}/cards",
      *     summary="List cards for a month",
-     *     description="Retrieve a column (creating it if it does not yet exist) and list its cards ordered by position.",
+     *     description="Retrieve an existing column and its cards ordered by position. Returns a null column without creating one when the month is empty.",
      *     tags={"columns", "cards"},
      *     security={{"SanctumToken": {}}},
      *
@@ -38,16 +39,25 @@ class ColumnController extends Controller
     public function cards(YearMonthRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $column = $this->columns->firstOrCreate($data['year'], $data['month'], $request->user()->id);
+        $column = Column::query()
+            ->where('year', $data['year'])
+            ->where('month', $data['month'])
+            ->where('user_id', $request->user()->id)
+            ->first();
 
-        $cards = $column->cards()
-            ->orderBy('order')
-            ->orderBy('title')
-            ->get();
+        $cards = $column?->cards()->orderBy('order')->orderBy('title')->get() ?? collect();
 
         return response()->json([
             'column' => $column,
             'cards' => $cards,
         ]);
+    }
+
+    public function ensure(YearMonthRequest $request): JsonResponse
+    {
+        $data = $request->validated();
+        $column = $this->columns->firstOrCreate($data['year'], $data['month'], $request->user()->id);
+
+        return response()->json($column);
     }
 }

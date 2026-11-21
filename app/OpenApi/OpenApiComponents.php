@@ -131,7 +131,7 @@ use OpenApi\Annotations as OA;
  *     type="object",
  *     required={"column","cards"},
  *
- *     @OA\Property(property="column", ref="#/components/schemas/Column"),
+ *     @OA\Property(property="column", ref="#/components/schemas/Column", nullable=true),
  *     @OA\Property(
  *         property="cards",
  *         type="array",

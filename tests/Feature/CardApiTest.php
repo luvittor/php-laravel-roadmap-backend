@@ -77,6 +77,34 @@ class CardApiTest extends TestCase
         $res->assertJsonPath('cards.2.order', 3);
     }
 
+    public function test_fetching_an_empty_month_does_not_create_a_column(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->getJson('/api/v1/columns/2027/3/cards', $this->authHeaders($user));
+
+        $response->assertOk()->assertJsonPath('column', null)->assertJsonCount(0, 'cards');
+        $this->assertDatabaseMissing('columns', [
+            'year' => 2027,
+            'month' => 3,
+            'user_id' => $user->id,
+        ]);
+    }
+
+    public function test_ensuring_a_month_column_creates_it_on_demand(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->postJson('/api/v1/columns/2027/3', [], $this->authHeaders($user));
+
+        $response->assertOk()->assertJsonPath('year', 2027)->assertJsonPath('month', 3);
+        $this->assertDatabaseHas('columns', [
+            'year' => 2027,
+            'month' => 3,
+            'user_id' => $user->id,
+        ]);
+    }
+
     public function test_show_card_returns_card(): void
     {
         $user = User::factory()->create();

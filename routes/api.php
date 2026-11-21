@@ -15,6 +15,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/ping-auth', [AuthController::class, 'pingAuth']);
 
         Route::get('/columns/{year}/{month}/cards', [ColumnController::class, 'cards']);
+        Route::post('/columns/{year}/{month}', [ColumnController::class, 'ensure']);
 
         // no middleware here, as the authorization is handled in the CardController
         // needs to find the column fist
