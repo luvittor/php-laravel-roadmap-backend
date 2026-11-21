@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CardController;
+use App\Http\Controllers\ColumnController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
@@ -12,22 +14,22 @@ Route::prefix('v1')->group(function () {
         Route::get('/user', [AuthController::class, 'user']);
         Route::get('/ping-auth', [AuthController::class, 'pingAuth']);
 
-        Route::get('/columns/{year}/{month}/cards', [\App\Http\Controllers\ColumnController::class, 'cards']);
+        Route::get('/columns/{year}/{month}/cards', [ColumnController::class, 'cards']);
 
         // no middleware here, as the authorization is handled in the CardController
         // needs to find the column fist
-        Route::post('/cards', [\App\Http\Controllers\CardController::class, 'store']);
+        Route::post('/cards', [CardController::class, 'store']);
 
-        Route::get('/cards/{card}', [\App\Http\Controllers\CardController::class, 'show'])
+        Route::get('/cards/{card}', [CardController::class, 'show'])
             ->middleware('can:view,card')
             ->name('cards.show');
-        Route::patch('/cards/{card}/title', [\App\Http\Controllers\CardController::class, 'updateTitle'])
+        Route::patch('/cards/{card}/title', [CardController::class, 'updateTitle'])
             ->middleware('can:update,card');
-        Route::patch('/cards/{card}/status', [\App\Http\Controllers\CardController::class, 'updateStatus'])
+        Route::patch('/cards/{card}/status', [CardController::class, 'updateStatus'])
             ->middleware('can:update,card');
-        Route::patch('/cards/{card}/position', [\App\Http\Controllers\CardController::class, 'updatePosition'])
+        Route::patch('/cards/{card}/position', [CardController::class, 'updatePosition'])
             ->middleware('can:update,card');
-        Route::delete('/cards/{card}', [\App\Http\Controllers\CardController::class, 'destroy'])
+        Route::delete('/cards/{card}', [CardController::class, 'destroy'])
             ->middleware('can:delete,card');
     });
 });
