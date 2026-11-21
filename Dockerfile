@@ -1,5 +1,5 @@
-# Use official PHP 8.2 FPM image as a base
-FROM php:8.2-fpm
+# Use official PHP 8.3 FPM image as a base
+FROM php:8.3-fpm
 
 # -------------------------------------------------------------
 # Install system dependencies needed for Laravel and common PHP extensions
