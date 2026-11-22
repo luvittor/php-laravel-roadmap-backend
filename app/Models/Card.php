@@ -24,6 +24,7 @@ class Card extends Model
         'order',
         'title',
         'status',
+        'color',
     ];
 
     protected $casts = [

@@ -68,6 +68,14 @@ class CardAuthorizationTest extends TestCase
         $res->assertForbidden();
     }
 
+    public function test_route_blocks_updating_color_of_foreign_card(): void
+    {
+        [, $card, , $other] = $this->setUpCard();
+
+        $this->patchJson("/api/v1/cards/{$card->id}/color", ['color' => 'teal'], $this->authHeaders($other))
+            ->assertForbidden();
+    }
+
     public function test_route_blocks_updating_position_of_foreign_card(): void
     {
         [, $card, , $other] = $this->setUpCard();

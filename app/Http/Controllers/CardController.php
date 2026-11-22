@@ -220,6 +220,19 @@ class CardController extends Controller
         return response()->json($card);
     }
 
+    public function updateColor(Request $request, Card $card): JsonResponse
+    {
+        $this->authorize('update', $card);
+
+        $data = $request->validate([
+            'color' => 'required|in:slate,teal,green,yellow,blue',
+        ]);
+
+        $card->update(['color' => $data['color']]);
+
+        return response()->json($card);
+    }
+
     /**
      * @OA\Patch(
      *     path="/api/v1/cards/{card}/position",

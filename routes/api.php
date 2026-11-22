@@ -28,6 +28,8 @@ Route::prefix('v1')->group(function () {
             ->middleware('can:update,card');
         Route::patch('/cards/{card}/status', [CardController::class, 'updateStatus'])
             ->middleware('can:update,card');
+        Route::patch('/cards/{card}/color', [CardController::class, 'updateColor'])
+            ->middleware('can:update,card');
         Route::patch('/cards/{card}/position', [CardController::class, 'updatePosition'])
             ->middleware('can:update,card');
         Route::delete('/cards/{card}', [CardController::class, 'destroy'])

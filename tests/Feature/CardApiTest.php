@@ -172,6 +172,20 @@ class CardApiTest extends TestCase
         $this->assertDatabaseMissing('cards', ['id' => $cardId]);
     }
 
+    public function test_card_color_can_be_changed_and_persists_independently_of_status(): void
+    {
+        $user = User::factory()->create();
+        $column = Column::factory()->for($user)->create();
+        $card = Card::factory()->for($column)->create(['status' => 'in_progress']);
+
+        $this->patchJson("/api/v1/cards/{$card->id}/color", ['color' => 'teal'], $this->authHeaders($user))
+            ->assertOk()
+            ->assertJsonPath('color', 'teal')
+            ->assertJsonPath('status', 'in_progress');
+
+        $this->assertDatabaseHas('cards', ['id' => $card->id, 'color' => 'teal', 'status' => 'in_progress']);
+    }
+
     public function test_cards_endpoint_returns_validation_errors_for_invalid_year_or_month(): void
     {
         $user = User::factory()->create();
