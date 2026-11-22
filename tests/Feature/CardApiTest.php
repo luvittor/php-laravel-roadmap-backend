@@ -91,6 +91,21 @@ class CardApiTest extends TestCase
         ]);
     }
 
+    public function test_month_summaries_return_card_totals_without_creating_empty_columns(): void
+    {
+        $user = User::factory()->create();
+        $column = Column::factory()->for($user)->create(['year' => 2025, 'month' => 6]);
+        Card::factory()->count(2)->for($column)->create();
+
+        $this->getJson('/api/v1/columns/summaries?from_year=2025&from_month=5&to_year=2025&to_month=7', $this->authHeaders($user))
+            ->assertOk()
+            ->assertJsonPath('2025-6.card_count', 2)
+            ->assertJsonMissingPath('2025-5')
+            ->assertJsonMissingPath('2025-7');
+
+        $this->assertDatabaseCount('columns', 1);
+    }
+
     public function test_ensuring_a_month_column_creates_it_on_demand(): void
     {
         $user = User::factory()->create();
