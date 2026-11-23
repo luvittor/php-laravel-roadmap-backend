@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\CardColor;
 use App\Models\Card;
 use App\Models\Column;
 use App\Models\User;
@@ -77,6 +78,49 @@ class CardApiTest extends TestCase
         $res->assertJsonPath('cards.2.order', 3);
     }
 
+    public function test_fetching_an_empty_month_does_not_create_a_column(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->getJson('/api/v1/columns/2027/3/cards', $this->authHeaders($user));
+
+        $response->assertOk()->assertJsonPath('column', null)->assertJsonCount(0, 'cards');
+        $this->assertDatabaseMissing('columns', [
+            'year' => 2027,
+            'month' => 3,
+            'user_id' => $user->id,
+        ]);
+    }
+
+    public function test_month_summaries_return_card_totals_without_creating_empty_columns(): void
+    {
+        $user = User::factory()->create();
+        $column = Column::factory()->for($user)->create(['year' => 2025, 'month' => 6]);
+        Card::factory()->count(2)->for($column)->create();
+
+        $this->getJson('/api/v1/columns/summaries?from_year=2025&from_month=5&to_year=2025&to_month=7', $this->authHeaders($user))
+            ->assertOk()
+            ->assertJsonPath('2025-6.card_count', 2)
+            ->assertJsonMissingPath('2025-5')
+            ->assertJsonMissingPath('2025-7');
+
+        $this->assertDatabaseCount('columns', 1);
+    }
+
+    public function test_ensuring_a_month_column_creates_it_on_demand(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->postJson('/api/v1/columns/2027/3', [], $this->authHeaders($user));
+
+        $response->assertOk()->assertJsonPath('year', 2027)->assertJsonPath('month', 3);
+        $this->assertDatabaseHas('columns', [
+            'year' => 2027,
+            'month' => 3,
+            'user_id' => $user->id,
+        ]);
+    }
+
     public function test_show_card_returns_card(): void
     {
         $user = User::factory()->create();
@@ -142,6 +186,22 @@ class CardApiTest extends TestCase
 
         // assert the card is deleted from the database
         $this->assertDatabaseMissing('cards', ['id' => $cardId]);
+    }
+
+    public function test_card_color_can_be_changed_and_persists_independently_of_status(): void
+    {
+        $user = User::factory()->create();
+        $column = Column::factory()->for($user)->create();
+        $card = Card::factory()->for($column)->create(['status' => 'in_progress']);
+
+        foreach (CardColor::cases() as $color) {
+            $this->patchJson("/api/v1/cards/{$card->id}/color", ['color' => $color->value], $this->authHeaders($user))
+                ->assertOk()
+                ->assertJsonPath('color', $color->value)
+                ->assertJsonPath('status', 'in_progress');
+        }
+
+        $this->assertDatabaseHas('cards', ['id' => $card->id, 'color' => CardColor::Blue->value, 'status' => 'in_progress']);
     }
 
     public function test_cards_endpoint_returns_validation_errors_for_invalid_year_or_month(): void

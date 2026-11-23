@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\Models\User;
+use Database\Factories\ColumnFactory;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
@@ -12,7 +13,7 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        \Database\Factories\ColumnFactory::resetSequence();
+        ColumnFactory::resetSequence();
     }
 
     protected function authHeaders(User $user): array

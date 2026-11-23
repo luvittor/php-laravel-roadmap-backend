@@ -112,6 +112,16 @@ class CardApiSadPathTest extends TestCase
             ->assertNotFound();
     }
 
+    public function test_update_color_rejects_values_outside_the_palette(): void
+    {
+        $user = User::factory()->create();
+        $card = Card::factory()->for(Column::factory()->for($user)->create())->create();
+
+        $this->patchJson("/api/v1/cards/{$card->id}/color", ['color' => 'purple'], $this->authHeaders($user))
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['color']);
+    }
+
     public function test_update_position_requires_authentication(): void
     {
         $card = Card::factory()->for(Column::factory()->for(User::factory()->create()))->create();

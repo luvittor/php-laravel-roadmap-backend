@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Column;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<\App\Models\Column>
+ * @extends Factory<Column>
  */
 class ColumnFactory extends Factory
 {

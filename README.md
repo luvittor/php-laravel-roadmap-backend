@@ -1,6 +1,6 @@
 # Roadmap Backend
 
-[![PHP](https://img.shields.io/badge/PHP-8.2-blue)](https://www.php.net/)
+[![PHP](https://img.shields.io/badge/PHP-8.3-blue)](https://www.php.net/)
 [![Laravel](https://img.shields.io/badge/Laravel-12.0-red)](https://laravel.com/)
 [![Docker](https://img.shields.io/badge/Docker-28.0-blue)](https://www.docker.com/)
 [![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-CI/CD-blue)](https://github.com/luvittor/php-laravel-roadmap-backend/actions)
@@ -73,7 +73,7 @@ docker compose up -d
 #### Host Machine
 
 - Make sure you copied the `.env.example` to `.env` and configured it properly.
-- Make sure you have PHP (>= 8.2) and Composer installed on your host machine.
+- Make sure you have PHP (>= 8.3) and Composer installed on your host machine.
 
 ```bash
 composer install
@@ -176,3 +176,7 @@ All of our Postman artifacts live in `docs/postman/`.
 | `PATCH`  | `/cards/{id}/status`            | Update only the card status       |
 | `PATCH`  | `/cards/{id}/position`          | Move card to another column/order |
 | `DELETE` | `/cards/{id}`                   | Delete a card                     |
+
+## Production deployment
+
+The deployment workflow keeps the Laravel application under the configured domain and subdirectory, then rewrites requests through `public/index.php`. Set the frontend API base to the backend directory without `/public/`; Laravel API routes are appended at `/api/v1`.

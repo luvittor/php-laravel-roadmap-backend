@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Card;
 use App\Models\Column;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -41,7 +42,7 @@ class DatabaseSeeder extends Seeder
         // Create cards for each column
         Column::all()->each(function ($column) {
             $cards_random = rand(0, 10);
-            $column->cards()->saveMany(\App\Models\Card::factory($cards_random)->make());
+            $column->cards()->saveMany(Card::factory($cards_random)->make());
         });
     }
 }
