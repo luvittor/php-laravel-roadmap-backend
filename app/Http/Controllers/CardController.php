@@ -9,9 +9,9 @@ use App\Services\CardService;
 use App\Services\ColumnService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\Enum;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Validation\Rules\Enum;
 
 class CardController extends Controller
 {
