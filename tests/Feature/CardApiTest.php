@@ -121,6 +121,31 @@ class CardApiTest extends TestCase
         ]);
     }
 
+    public function test_create_card_accepts_color_and_starts_not_started(): void
+    {
+        $user = User::factory()->create();
+        $column = Column::factory()->for($user)->create(['year' => 2026, 'month' => 12]);
+
+        $response = $this->postJson('/api/v1/cards', [
+            'column_id' => $column->id,
+            'order' => 1,
+            'title' => 'Duplicated task',
+            'color' => CardColor::Teal->value,
+        ], $this->authHeaders($user));
+
+        $response->assertCreated()
+            ->assertJsonPath('title', 'Duplicated task')
+            ->assertJsonPath('color', CardColor::Teal->value)
+            ->assertJsonPath('status', 'not_started');
+        $this->assertDatabaseHas('cards', [
+            'id' => $response->json('id'),
+            'column_id' => $column->id,
+            'title' => 'Duplicated task',
+            'color' => CardColor::Teal->value,
+            'status' => 'not_started',
+        ]);
+    }
+
     public function test_show_card_returns_card(): void
     {
         $user = User::factory()->create();

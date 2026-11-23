@@ -64,6 +64,7 @@ class CardController extends Controller
             'column_id' => 'required|exists:columns,id',
             'order' => 'required|integer|min:1',
             'title' => 'nullable|string',
+            'color' => ['sometimes', new Enum(CardColor::class)],
         ]);
 
         $column = $this->columns->find($data['column_id']);

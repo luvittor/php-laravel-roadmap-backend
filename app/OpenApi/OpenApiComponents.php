@@ -103,13 +103,14 @@ use OpenApi\Annotations as OA;
  * @OA\Schema(
  *     schema="Card",
  *     type="object",
- *     required={"id","column_id","order","title","status"},
+ *     required={"id","column_id","order","title","status","color"},
  *
  *     @OA\Property(property="id", type="integer"),
  *     @OA\Property(property="column_id", type="integer"),
  *     @OA\Property(property="order", type="integer", minimum=1),
  *     @OA\Property(property="title", type="string"),
  *     @OA\Property(property="status", type="string", enum={"not_started","in_progress","completed"}),
+ *     @OA\Property(property="color", type="string", enum={"slate","teal","green","yellow","blue"}),
  *     @OA\Property(property="created_at", type="string", format="date-time", nullable=true),
  *     @OA\Property(property="updated_at", type="string", format="date-time", nullable=true)
  * )
@@ -147,7 +148,8 @@ use OpenApi\Annotations as OA;
  *
  *     @OA\Property(property="column_id", type="integer", description="Must reference an existing column."),
  *     @OA\Property(property="order", type="integer", minimum=1),
- *     @OA\Property(property="title", type="string", nullable=true, description="Optional card title; omit or pass null for no title.")
+ *     @OA\Property(property="title", type="string", nullable=true, description="Optional card title; omit or pass null for no title."),
+ *     @OA\Property(property="color", type="string", enum={"slate","teal","green","yellow","blue"}, description="Optional card color; defaults to slate.")
  * )
  *
  * @OA\Schema(
