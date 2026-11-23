@@ -11,6 +11,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    env:
+      REMOTE_PHP: /usr/local/php83/bin/php
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -74,8 +77,20 @@ jobs:
             # Load the private production environment from its new location.
             cp /home/dh_jirb5e/vettoretti.dev_envs/roadmap_api.env /home/dh_jirb5e/vettoretti.dev_roadmap_api_tmp/.env
 
+            # Fail before activation if the host's PHP CLI is below the app requirement.
+            REMOTE_PHP='${{ env.REMOTE_PHP }}'
+            if ! "$REMOTE_PHP" -r 'exit(version_compare(PHP_VERSION, "8.3.0", ">=") ? 0 : 1);'; then
+              echo 'DreamHost PHP CLI must be 8.3 or newer.' >&2
+              exit 1
+            fi
+            "$REMOTE_PHP" --version
+
             # Install the versioned rewrite rule at the app root before activation.
             mv /home/dh_jirb5e/vettoretti.dev_roadmap_api_tmp/backend-root.htaccess /home/dh_jirb5e/vettoretti.dev_roadmap_api_tmp/.htaccess
+
+            # Apply database changes while the current API release is still active.
+            cd /home/dh_jirb5e/vettoretti.dev_roadmap_api_tmp
+            "$REMOTE_PHP" artisan migrate --force
 
             # Create the target directory if it doesn't exist
             mkdir -p /home/dh_jirb5e/vettoretti.dev/roadmap
@@ -91,15 +106,11 @@ jobs:
             # find /home/dh_jirb5e/vettoretti.dev/roadmap/api -type f -exec chmod 644 {} \;
             # find /home/dh_jirb5e/vettoretti.dev/roadmap/api -type d -exec chmod 755 {} \;
 
-            # Run migrations
-            cd /home/dh_jirb5e/vettoretti.dev/roadmap/api
-            php artisan migrate --force
-
             # Generate Laravel caches (optional, but recommended)
             cd /home/dh_jirb5e/vettoretti.dev/roadmap/api
-            php artisan config:cache
-            php artisan route:cache
-            php artisan view:cache
+            "$REMOTE_PHP" artisan config:cache
+            "$REMOTE_PHP" artisan route:cache
+            "$REMOTE_PHP" artisan view:cache
 
             # Clear old api directory if it exists
             rm -rf /home/dh_jirb5e/vettoretti.dev/roadmap/api_old
