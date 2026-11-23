@@ -33,8 +33,8 @@ jobs:
           password: ${{ secrets.SFTP_PASSWORD }}
           port: 22
           script: |
-            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp
-            mkdir /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp
+            rm -rf /home/dh_jirb5e/vettoretti.dev_roadmap_api_tmp
+            mkdir /home/dh_jirb5e/vettoretti.dev_roadmap_api_tmp
 
       - name: Deploy Laravel via SFTP
         uses: appleboy/scp-action@v0.1.7
@@ -45,7 +45,7 @@ jobs:
           port: 22
           # Uploading the entire repository with vendor
           source: "./"
-          target: "/home/dh_jirb5e/vittoretti.com_roadmap_api_tmp"
+          target: "/home/dh_jirb5e/vettoretti.dev_roadmap_api_tmp"
 
       - name: Manage Files on the server
         uses: appleboy/ssh-action@v0.1.7
@@ -55,54 +55,51 @@ jobs:
           password: ${{ secrets.SFTP_PASSWORD }}
           port: 22
           script: |
-            # Cleanup unnecessary files and directories from temp directory
-            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/.github
-            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/.git
-            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/.gitignore
-            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/README*  
-            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/LICENSE*  
-            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/*.md
-            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/.env*
-            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/storage/logs/*.log
-            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/tests
-            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/docs
-            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/Dockerfile*
-            rm -rf /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/docker-compose.yml
-            
-            # Copy .env file to the temp directory
-            cp /home/dh_jirb5e/vittoretti.com_envs/roadmap_api.env /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/.env
+            set -e
 
-            # Only public/ is served: /public/* keeps working (current frontend),
-            # any other path is rewritten into public/ (composer.json, vendor, etc. become 404)
-            printf '%s\n' \
-              'Options -Indexes' \
-              'RewriteEngine On' \
-              'RewriteRule ^public/ - [L]' \
-              'RewriteRule ^(.*)$ public/$1 [L]' > /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp/.htaccess
+            # Cleanup unnecessary files and directories from temp directory
+            rm -rf /home/dh_jirb5e/vettoretti.dev_roadmap_api_tmp/.github
+            rm -rf /home/dh_jirb5e/vettoretti.dev_roadmap_api_tmp/.git
+            rm -rf /home/dh_jirb5e/vettoretti.dev_roadmap_api_tmp/.gitignore
+            rm -rf /home/dh_jirb5e/vettoretti.dev_roadmap_api_tmp/README*
+            rm -rf /home/dh_jirb5e/vettoretti.dev_roadmap_api_tmp/LICENSE*
+            rm -rf /home/dh_jirb5e/vettoretti.dev_roadmap_api_tmp/*.md
+            rm -rf /home/dh_jirb5e/vettoretti.dev_roadmap_api_tmp/.env*
+            rm -rf /home/dh_jirb5e/vettoretti.dev_roadmap_api_tmp/storage/logs/*.log
+            rm -rf /home/dh_jirb5e/vettoretti.dev_roadmap_api_tmp/tests
+            rm -rf /home/dh_jirb5e/vettoretti.dev_roadmap_api_tmp/docs
+            rm -rf /home/dh_jirb5e/vettoretti.dev_roadmap_api_tmp/Dockerfile*
+            rm -rf /home/dh_jirb5e/vettoretti.dev_roadmap_api_tmp/docker-compose.yml
+            
+            # Load the private production environment from its new location.
+            cp /home/dh_jirb5e/vettoretti.dev_envs/roadmap_api.env /home/dh_jirb5e/vettoretti.dev_roadmap_api_tmp/.env
+
+            # Install the versioned rewrite rule at the app root before activation.
+            mv /home/dh_jirb5e/vettoretti.dev_roadmap_api_tmp/backend-root.htaccess /home/dh_jirb5e/vettoretti.dev_roadmap_api_tmp/.htaccess
 
             # Create the target directory if it doesn't exist
-            mkdir -p /home/dh_jirb5e/vittoretti.com/roadmap
+            mkdir -p /home/dh_jirb5e/vettoretti.dev/roadmap
 
             # Rename current api directory to api_old, if it exists
-            mv /home/dh_jirb5e/vittoretti.com/roadmap/api /home/dh_jirb5e/vittoretti.com/roadmap/api_old 2>/dev/null || true
+            mv /home/dh_jirb5e/vettoretti.dev/roadmap/api /home/dh_jirb5e/vettoretti.dev/roadmap/api_old 2>/dev/null || true
 
             # Move the temp directory to the final location
-            mv /home/dh_jirb5e/vittoretti.com_roadmap_api_tmp /home/dh_jirb5e/vittoretti.com/roadmap/api
+            mv /home/dh_jirb5e/vettoretti.dev_roadmap_api_tmp /home/dh_jirb5e/vettoretti.dev/roadmap/api
 
             # Set file permissions (maybe necessary depending on your server setup)
-            # chown -R dh_jirb5e:dh_jirb5e /home/dh_jirb5e/vittoretti.com/roadmap/api
-            # find /home/dh_jirb5e/vittoretti.com/roadmap/api -type f -exec chmod 644 {} \;
-            # find /home/dh_jirb5e/vittoretti.com/roadmap/api -type d -exec chmod 755 {} \;
+            # chown -R dh_jirb5e:dh_jirb5e /home/dh_jirb5e/vettoretti.dev/roadmap/api
+            # find /home/dh_jirb5e/vettoretti.dev/roadmap/api -type f -exec chmod 644 {} \;
+            # find /home/dh_jirb5e/vettoretti.dev/roadmap/api -type d -exec chmod 755 {} \;
 
             # Run migrations
-            cd /home/dh_jirb5e/vittoretti.com/roadmap/api
+            cd /home/dh_jirb5e/vettoretti.dev/roadmap/api
             php artisan migrate --force
 
             # Generate Laravel caches (optional, but recommended)
-            cd /home/dh_jirb5e/vittoretti.com/roadmap/api
+            cd /home/dh_jirb5e/vettoretti.dev/roadmap/api
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
 
             # Clear old api directory if it exists
-            rm -rf /home/dh_jirb5e/vittoretti.com/roadmap/api_old
+            rm -rf /home/dh_jirb5e/vettoretti.dev/roadmap/api_old

@@ -176,3 +176,7 @@ All of our Postman artifacts live in `docs/postman/`.
 | `PATCH`  | `/cards/{id}/status`            | Update only the card status       |
 | `PATCH`  | `/cards/{id}/position`          | Move card to another column/order |
 | `DELETE` | `/cards/{id}`                   | Delete a card                     |
+
+## Production deployment
+
+The deployment workflow keeps the Laravel application under the configured domain and subdirectory, then rewrites requests through `public/index.php`. Set the frontend API base to the backend directory without `/public/`; Laravel API routes are appended at `/api/v1`.
