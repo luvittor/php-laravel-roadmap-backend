@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\CardColor;
 use App\Http\Requests\PositionRequest;
 use App\Models\Card;
 use App\Services\CardService;
@@ -10,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Validation\Rules\Enum;
 
 class CardController extends Controller
 {
@@ -225,7 +227,7 @@ class CardController extends Controller
         $this->authorize('update', $card);
 
         $data = $request->validate([
-            'color' => 'required|in:slate,teal,green,yellow,blue',
+            'color' => ['required', new Enum(CardColor::class)],
         ]);
 
         $card->update(['color' => $data['color']]);

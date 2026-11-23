@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\CardColor;
 use App\Models\Card;
 use App\Models\Column;
 use App\Models\User;
@@ -193,12 +194,14 @@ class CardApiTest extends TestCase
         $column = Column::factory()->for($user)->create();
         $card = Card::factory()->for($column)->create(['status' => 'in_progress']);
 
-        $this->patchJson("/api/v1/cards/{$card->id}/color", ['color' => 'teal'], $this->authHeaders($user))
-            ->assertOk()
-            ->assertJsonPath('color', 'teal')
-            ->assertJsonPath('status', 'in_progress');
+        foreach (CardColor::cases() as $color) {
+            $this->patchJson("/api/v1/cards/{$card->id}/color", ['color' => $color->value], $this->authHeaders($user))
+                ->assertOk()
+                ->assertJsonPath('color', $color->value)
+                ->assertJsonPath('status', 'in_progress');
+        }
 
-        $this->assertDatabaseHas('cards', ['id' => $card->id, 'color' => 'teal', 'status' => 'in_progress']);
+        $this->assertDatabaseHas('cards', ['id' => $card->id, 'color' => CardColor::Blue->value, 'status' => 'in_progress']);
     }
 
     public function test_cards_endpoint_returns_validation_errors_for_invalid_year_or_month(): void
