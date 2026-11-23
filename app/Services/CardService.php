@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\CardColor;
 use App\Models\Card;
 use App\Models\Column;
 
@@ -13,6 +14,7 @@ class CardService
             'column_id' => $data['column_id'],
             'order' => $data['order'],
             'title' => $data['title'] ?? '',
+            'color' => $data['color'] ?? CardColor::Slate,
         ]);
 
         // Refresh to ensure all database defaults are loaded

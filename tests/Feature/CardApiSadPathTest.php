@@ -44,6 +44,20 @@ class CardApiSadPathTest extends TestCase
             ->assertJsonValidationErrors(['column_id']);
     }
 
+    public function test_create_card_rejects_an_invalid_color(): void
+    {
+        $user = User::factory()->create();
+        $column = Column::factory()->for($user)->create();
+
+        $this->postJson('/api/v1/cards', [
+            'column_id' => $column->id,
+            'order' => 1,
+            'color' => 'purple',
+        ], $this->authHeaders($user))
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['color']);
+    }
+
     public function test_show_card_requires_authentication(): void
     {
         $card = Card::factory()->for(Column::factory()->for(User::factory()->create()))->create();
